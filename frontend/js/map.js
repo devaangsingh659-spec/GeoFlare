@@ -29,15 +29,80 @@ function initializeMap() {
        OPENSTREETMAP
     ===================================== */
 
-    L.tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    /* =========================================================
+    BASEMAPS
+    ========================================================= */
+
+    const darkTileLayer = L.tileLayer(
+        'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png',
         {
-            maxZoom: 19,
+            maxZoom: 20,
 
             attribution:
-                '&copy; OpenStreetMap contributors'
+                '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, ' +
+                '&copy; <a href="https://openmaptiles.org/">OpenMapTiles</a>, ' +
+                '&copy; <a href="https://openstreetmap.org/">OpenStreetMap</a>'
         }
-    ).addTo(map);
+    );
+
+
+    const lightTileLayer = L.tileLayer(
+        'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png',
+        {
+            maxZoom: 20,
+
+            attribution:
+                '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, ' +
+                '&copy; <a href="https://openmaptiles.org/">OpenMapTiles</a>, ' +
+                '&copy; <a href="https://openstreetmap.org/">OpenStreetMap</a>'
+        }
+    );
+
+
+    /* Start with dark */
+
+    const initialTheme =
+        document.documentElement.dataset.theme ||
+        "dark";
+
+    if (initialTheme === "light") {
+        lightTileLayer.addTo(map);
+    } else {
+        darkTileLayer.addTo(map);
+    }
+
+    /* =========================================================
+    MAP THEME SWITCHER
+    ========================================================= */
+
+    window.setMapTheme = function(theme) {
+
+        if (!map) {
+            return;
+        }
+
+
+        if (theme === "light") {
+
+            if (map.hasLayer(darkTileLayer)) {
+                map.removeLayer(darkTileLayer);
+            }
+
+            if (!map.hasLayer(lightTileLayer)) {
+                lightTileLayer.addTo(map);
+            }
+
+        } else {
+
+            if (map.hasLayer(lightTileLayer)) {
+                map.removeLayer(lightTileLayer);
+            }
+
+            if (!map.hasLayer(darkTileLayer)) {
+                darkTileLayer.addTo(map);
+            }
+        }
+    };
 
 
     /* =====================================

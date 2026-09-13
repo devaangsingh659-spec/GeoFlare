@@ -553,3 +553,18 @@ function showMapMessage(message) {
         }
     }, 4000);
 }
+
+//----------------SIDEBAR TOGGLE----------------------------
+const sidebarToggle = document.getElementById('sidebarToggle');
+const sidebar = document.querySelector('.sidebar');
+
+if (sidebarToggle && sidebar) {
+    sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+        
+        const isCollapsed = sidebar.classList.contains('collapsed');
+        sidebarToggle.textContent = isCollapsed ? '▶' : '◀';
+        sidebarToggle.setAttribute('title', isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar');
+    });
+}
+

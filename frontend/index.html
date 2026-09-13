@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
 
@@ -20,6 +20,25 @@
         href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     >
 
+    <!-- Apply saved theme BEFORE CSS renders -->
+    <script>
+        (function () {
+
+            const saved =
+                localStorage.getItem(
+                    "fireDetectionTheme"
+                );
+
+            const theme =
+                saved === "light"
+                    ? "light"
+                    : "dark";
+
+            document.documentElement.dataset.theme =
+                theme;
+
+        })();
+    </script>
 
     <!-- ================= OUR CSS ================= -->
 
@@ -38,6 +57,17 @@
         href="css/popup.css"
     >
 
+    <!-- ================= FONTS ================= -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet"
+    >
+
+
+
 </head>
 
 
@@ -52,7 +82,7 @@
 
         <div class="logo">
 
-            <span class="logo-fire">🔥</span>
+            <span class="logo-fire">🗺️</span>
 
             <div>
 
@@ -68,17 +98,27 @@
 
         </div>
 
+        <div class="header-actions">
 
-        <!-- API STATUS -->
-
-        <div class="status-container">
-
-            <span
-                id="apiStatus"
-                class="status offline"
+            <button
+                id="themeToggle"
+                class="theme-toggle"
+                type="button"
+                aria-label="Switch theme"
             >
-                ● API Offline
-            </span>
+                ☀ Light
+            </button>
+
+            <div class="status-container">
+
+                <span
+                    id="apiStatus"
+                    class="status offline"
+                >
+                    ● API Offline
+                </span>
+
+            </div>
 
         </div>
 
@@ -98,7 +138,6 @@
         ====================================================== -->
 
         <aside class="sidebar">
-
 
             <!-- ================= MONITORING ================= -->
 
@@ -389,21 +428,6 @@
 
 
             <!-- =================================================
-                 SEARCH BUTTON
-            ================================================== -->
-
-            <button
-                id="searchButton"
-                class="search-button"
-            >
-
-                Search Fires
-
-            </button>
-
-
-
-            <!-- =================================================
                  LOADING
             ================================================== -->
 
@@ -578,7 +602,11 @@
 
             <div id="map"></div>
 
-
+            <!-- FLOATING SIDEBAR TOGGLE (Directly above the +/- zoom buttons) -->
+            <button id="sidebarToggle" class="sidebar-toggle" title="Collapse Sidebar">
+                ◀
+            </button>
+            
             <!-- MAP MESSAGE -->
 
             <div
@@ -589,6 +617,12 @@
                 Move or zoom the map to search this area.
 
             </div>
+            <!-- =================================================
+                SEARCH BUTTON (Floating Bottom-Center)
+            ================================================== -->
+            <button id="searchButton" class="search-button">
+                Search Fires
+            </button>
 
 
         </section>
@@ -629,6 +663,8 @@
     <script src="js/ui.js"></script>
 
     <script src="js/map.js"></script>
+
+    <script src="js/theme.js"></script>
 
     <script src="js/app.js"></script>
 

@@ -1,432 +1,1030 @@
-/* ================================
+/* =========================================================
+   FIRE DETECTION — LEAFLET POPUPS
+   Calm / Professional / Dark + Light Theme
+========================================================= */
+
+
+/* =========================================================
+   POPUP THEME VARIABLES
+   These use the same theme system as style.css / map.css.
+========================================================= */
+
+:root,
+:root[data-theme="dark"] {
+
+    /* Popup surface */
+    --popup-bg: #202427;
+    --popup-bg-secondary: #191D1F;
+
+    /* Borders */
+    --popup-border: #3A3F42;
+    --popup-border-subtle: #303538;
+
+    /* Text */
+    --popup-text: #E8E6E1;
+    --popup-text-secondary: #B0B2B1;
+    --popup-text-muted: #7C8182;
+
+    /* Accent */
+    --popup-accent: #C5A96B;
+    --popup-accent-light: #D5BD87;
+
+    /* Classification */
+    --popup-new: #E05A4F;
+    --popup-recent: #E6A24B;
+    --popup-intermittent: #D4B15E;
+    --popup-persistent: #9A82B5;
+
+    /* Classification fills */
+    --popup-new-bg: rgba(224, 90, 79, 0.12);
+    --popup-recent-bg: rgba(230, 162, 75, 0.12);
+    --popup-intermittent-bg: rgba(212, 177, 94, 0.12);
+    --popup-persistent-bg: rgba(154, 130, 181, 0.12);
+
+    /* Probability chart */
+    --popup-prob-bg: #191D1F;
+    --popup-track: #303538;
+
+    /* Shadow */
+    --popup-shadow: rgba(0, 0, 0, 0.50);
+}
+
+
+:root[data-theme="light"] {
+
+    /* Popup surface */
+--popup-bg: #FFFFFF;
+--popup-bg-secondary: #F8FAFC;
+
+/* Borders */
+--popup-border: #E2E8F0;
+--popup-border-subtle: #EDF2F7;
+
+/* Text */
+--popup-text: #0F172A;
+--popup-text-secondary: #475569;
+--popup-text-muted: #94A3B8;
+
+/* Accent */
+--popup-accent: #2563EB;
+--popup-accent-light: #3B82F6;
+
+/* Classification */
+--popup-new: #C94036;
+--popup-recent: #C77A22;
+--popup-intermittent: #AA841F;
+--popup-persistent: #795F96;
+
+/* Classification fills */
+--popup-new-bg: rgba(201, 64, 54, 0.10);
+--popup-recent-bg: rgba(199, 122, 34, 0.10);
+--popup-intermittent-bg: rgba(170, 132, 31, 0.10);
+--popup-persistent-bg: rgba(121, 95, 150, 0.10);
+
+/* Probability chart */
+--popup-prob-bg: #F8FAFC;
+--popup-track: #E2E8F0;
+
+/* Shadow */
+--popup-shadow: rgba(15, 23, 42, 0.12);
+}
+
+
+/* =========================================================
+   LEAFLET POPUP CONTAINER
+========================================================= */
+
+.leaflet-popup-content-wrapper {
+
+    background:
+        var(--popup-bg) !important;
+
+    color:
+        var(--popup-text) !important;
+
+    border:
+        1px solid var(--popup-border) !important;
+
+    border-radius:
+        6px !important;
+
+    box-shadow:
+        0 10px 28px var(--popup-shadow) !important;
+
+    padding:
+        0 !important;
+
+    position:
+        relative;
+
+    /*
+       Keep the popup crisp.
+
+       No heavy glassmorphism.
+       No neon glow.
+    */
+}
+
+
+/* =========================================================
+   SMALL TOP ACCENT
+========================================================= */
+
+.leaflet-popup-content-wrapper::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 20px;
+    height: 2px;
+
+    background:
+        var(--popup-accent);
+
+    box-shadow:
+        none;
+}
+
+
+/* =========================================================
+   POPUP TIP
+========================================================= */
+
+.leaflet-popup-tip {
+
+    background:
+        var(--popup-bg) !important;
+
+    border:
+        1px solid var(--popup-border) !important;
+
+    box-shadow:
+        0 4px 10px var(--popup-shadow) !important;
+}
+
+
+/* =========================================================
+   CLOSE BUTTON
+========================================================= */
+
+.leaflet-popup-close-button {
+
+    color:
+        var(--popup-text-muted) !important;
+
+    padding:
+        8px !important;
+
+    top:
+        6px !important;
+
+    right:
+        8px !important;
+
+    transition:
+        color 0.18s ease,
+        transform 0.18s ease !important;
+}
+
+
+.leaflet-popup-close-button:hover {
+
+    color:
+        var(--popup-accent) !important;
+
+    transform:
+        scale(1.10) !important;
+}
+
+
+/* =========================================================
    FIRE POPUP
-================================ */
+========================================================= */
 
 .fire-popup {
-    min-width: 280px;
-    max-width: 340px;
+
+    min-width:
+        280px;
+
+    max-width:
+        340px;
 }
 
 
-/* ================================
+/* =========================================================
    POPUP TITLE
-================================ */
+========================================================= */
 
 .fire-popup-title {
-    font-size: 16px;
 
-    font-weight: 700;
+    font-size:
+        13px;
 
-    margin-bottom: 10px;
+    font-weight:
+        700;
 
-    color: #111827;
+    font-family:
+        "JetBrains Mono",
+        Consolas,
+        monospace;
+
+    letter-spacing:
+        0.6px;
+
+    text-transform:
+        uppercase;
+
+    margin-bottom:
+        12px;
+
+    color:
+        var(--popup-text);
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        8px;
+
+    border-bottom:
+        1px solid var(--popup-border-subtle);
+
+    padding-bottom:
+        8px;
 }
 
 
-/* ================================
+/* =========================================================
    POPUP ROW
-================================ */
+========================================================= */
 
 .fire-popup-row {
-    display: flex;
 
-    justify-content: space-between;
+    display:
+        flex;
 
-    align-items: flex-start;
+    justify-content:
+        space-between;
 
-    gap: 15px;
+    align-items:
+        flex-start;
 
-    padding: 5px 0;
+    gap:
+        15px;
 
-    font-size: 12px;
+    padding:
+        6px 0;
 
-    border-bottom: 1px solid #f3f4f6;
+    font-size:
+        11.5px;
+
+    border-bottom:
+        1px solid var(--popup-border-subtle);
 }
 
 
 .fire-popup-row:last-child {
-    border-bottom: none;
+
+    border-bottom:
+        none;
 }
 
 
-/* ================================
+/* =========================================================
    LABEL
-================================ */
+========================================================= */
 
 .fire-popup-label {
-    color: #6b7280;
 
-    flex-shrink: 0;
+    color:
+        var(--popup-text-muted);
+
+    flex-shrink:
+        0;
+
+    font-size:
+        11px;
+
+    letter-spacing:
+        0.25px;
 }
 
 
-/* ================================
+/* =========================================================
    VALUE
-================================ */
+========================================================= */
 
 .fire-popup-value {
-    font-weight: 600;
 
-    color: #111827;
+    font-weight:
+        650;
 
-    text-align: right;
+    color:
+        var(--popup-text);
 
-    word-break: break-word;
+    text-align:
+        right;
+
+    word-break:
+        break-word;
+
+    font-family:
+        "JetBrains Mono",
+        Consolas,
+        Monaco,
+        monospace;
+
+    font-size:
+        11.5px;
 }
 
 
-/* ================================
-   BADGE
-================================ */
+/* =========================================================
+   DEFAULT BADGE
+========================================================= */
 
 .fire-popup-badge {
-    display: inline-block;
 
-    padding: 4px 8px;
+    display:
+        inline-block;
 
-    border-radius: 12px;
+    padding:
+        2px 7px;
 
-    background: #fee2e2;
+    border-radius:
+        3px;
 
-    color: #b91c1c;
+    background:
+        var(--popup-new-bg);
 
-    font-size: 11px;
+    color:
+        var(--popup-new);
 
-    font-weight: 600;
+    border:
+        1px solid rgba(224, 90, 79, 0.40);
+
+    font-size:
+        10px;
+
+    font-family:
+        "JetBrains Mono",
+        Consolas,
+        monospace;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.5px;
+
+    text-transform:
+        uppercase;
 }
 
 
-/* ================================
+/* =========================================================
    SECTION TITLE
-================================ */
+========================================================= */
 
 .fire-popup-section-title {
-    margin-top: 12px;
 
-    margin-bottom: 7px;
+    margin-top:
+        14px;
 
-    padding-bottom: 5px;
+    margin-bottom:
+        8px;
 
-    border-bottom: 1px solid #e5e7eb;
+    padding-bottom:
+        4px;
 
-    font-size: 12px;
+    border-bottom:
+        1px solid var(--popup-border-subtle);
 
-    font-weight: 700;
+    font-size:
+        10.5px;
 
-    color: #374151;
+    font-weight:
+        700;
+
+    font-family:
+        "JetBrains Mono",
+        Consolas,
+        monospace;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        0.7px;
+
+    color:
+        var(--popup-text-muted);
 }
 
 
-/* ================================
-   PERSISTENCE STATUS
-================================ */
+/* =========================================================
+   PERSISTENCE BADGES
+========================================================= */
 
 .persistence-new {
-    background: #fee2e2;
 
-    color: #dc2626;
+    background:
+        var(--popup-new-bg);
 
-    font-weight: 700;
+    color:
+        var(--popup-new);
+
+    border:
+        1px solid rgba(224, 90, 79, 0.42);
+
+    font-weight:
+        700;
+
+    font-family:
+        "JetBrains Mono",
+        Consolas,
+        monospace;
+
+    box-shadow:
+        none;
 }
 
 
 .persistence-recent {
-    background: #dbeafe;
 
-    color: #2563eb;
+    background:
+        var(--popup-recent-bg);
 
-    font-weight: 700;
+    color:
+        var(--popup-recent);
+
+    border:
+        1px solid rgba(230, 162, 75, 0.42);
+
+    font-weight:
+        700;
+
+    font-family:
+        "JetBrains Mono",
+        Consolas,
+        monospace;
+
+    box-shadow:
+        none;
 }
 
 
 .persistence-intermittent {
-    background: #fef3c7;
 
-    color: #d97706;
+    background:
+        var(--popup-intermittent-bg);
 
-    font-weight: 700;
+    color:
+        var(--popup-intermittent);
+
+    border:
+        1px solid rgba(212, 177, 94, 0.42);
+
+    font-weight:
+        700;
+
+    font-family:
+        "JetBrains Mono",
+        Consolas,
+        monospace;
+
+    box-shadow:
+        none;
 }
 
 
 .persistence-persistent {
-    background: #ede9fe;
 
-    color: #7c3aed;
+    background:
+        var(--popup-persistent-bg);
 
-    font-weight: 700;
+    color:
+        var(--popup-persistent);
+
+    border:
+        1px solid rgba(154, 130, 181, 0.42);
+
+    font-weight:
+        700;
+
+    font-family:
+        "JetBrains Mono",
+        Consolas,
+        monospace;
+
+    box-shadow:
+        none;
 }
 
 
-/* ================================
-   PERSISTENCE REASON
-================================ */
+/* =========================================================
+   PERSISTENCE REASON CARD
+========================================================= */
 
 .fire-popup-reason {
-    margin-top: 7px;
 
-    padding: 8px;
+    margin-top:
+        8px;
 
-    background: #f9fafb;
+    padding:
+        7px 10px;
 
-    border-left: 3px solid #7c3aed;
+    background:
+        var(--popup-bg-secondary);
 
-    border-radius: 4px;
+    border:
+        1px solid var(--popup-border-subtle);
 
-    font-size: 11px;
+    border-left:
+        3px solid var(--popup-accent);
 
-    line-height: 1.5;
+    border-radius:
+        3px;
 
-    color: #6b7280;
+    font-size:
+        11px;
+
+    line-height:
+        1.5;
+
+    color:
+        var(--popup-text-secondary);
 }
 
 
-/* ================================
-   NEW REASON
-================================ */
+/* Persistence-specific accent */
 
 .persistence-new + .fire-popup-reason {
-    border-left-color: #dc2626;
+    border-left-color:
+        var(--popup-new);
 }
-
-
-/* ================================
-   RECENT REASON
-================================ */
 
 .persistence-recent + .fire-popup-reason {
-    border-left-color: #2563eb;
+    border-left-color:
+        var(--popup-recent);
 }
-
-
-/* ================================
-   INTERMITTENT REASON
-================================ */
 
 .persistence-intermittent + .fire-popup-reason {
-    border-left-color: #d97706;
+    border-left-color:
+        var(--popup-intermittent);
 }
-
-
-/* ================================
-   PERSISTENT REASON
-================================ */
 
 .persistence-persistent + .fire-popup-reason {
-    border-left-color: #7c3aed;
+    border-left-color:
+        var(--popup-persistent);
 }
 
 
-/* ================================
+/* =========================================================
    ML ANALYSIS
-================================ */
+========================================================= */
 
 .fire-popup-ml {
-    margin-top: 10px;
 
-    padding: 8px;
+    margin-top:
+        10px;
 
-    background: #f9fafb;
+    padding:
+        8px 10px;
 
-    border-radius: 6px;
+    background:
+        var(--popup-bg-secondary);
+
+    border:
+        1px solid var(--popup-border-subtle);
+
+    border-radius:
+        4px;
 }
 
 
-/* ================================
+/* =========================================================
    ML STATUS
-================================ */
+========================================================= */
 
 .ml-pending {
-    color: #d97706;
 
-    font-weight: 600;
+    color:
+        var(--popup-intermittent);
+
+    font-weight:
+        700;
+
+    font-family:
+        "JetBrains Mono",
+        Consolas,
+        monospace;
 }
 
 
 .ml-completed {
-    color: #059669;
 
-    font-weight: 600;
+    color:
+        #6FA875;
+
+    font-weight:
+        700;
+
+    font-family:
+        "JetBrains Mono",
+        Consolas,
+        monospace;
 }
 
 
 .ml-failed {
-    color: #dc2626;
 
-    font-weight: 600;
+    color:
+        var(--popup-new);
+
+    font-weight:
+        700;
+
+    font-family:
+        "JetBrains Mono",
+        Consolas,
+        monospace;
 }
 
 
-/* ================================
+/* =========================================================
    CLASS BADGES
-================================ */
+========================================================= */
+
+/* Industrial */
 
 .badge-industrial {
-    background: #ede9fe;
-    color: #6d28d9;
-    font-weight: 700;
+
+    background:
+        var(--popup-persistent-bg);
+
+    color:
+        var(--popup-persistent);
+
+    border:
+        1px solid rgba(154, 130, 181, 0.40);
+
+    font-weight:
+        700;
 }
+
+
+/* Agricultural */
 
 .badge-agricultural,
 .badge-agriculture {
-    background: #d1fae5;
-    color: #047857;
-    font-weight: 700;
+
+    background:
+        rgba(111, 168, 117, 0.11);
+
+    color:
+        #6FA875;
+
+    border:
+        1px solid rgba(111, 168, 117, 0.38);
+
+    font-weight:
+        700;
 }
+
+
+/* Forest */
 
 .badge-forest,
 .badge-forest_fire {
-    background: #fef3c7;
-    color: #b45309;
-    font-weight: 700;
+
+    background:
+        rgba(212, 177, 94, 0.11);
+
+    color:
+        var(--popup-intermittent);
+
+    border:
+        1px solid rgba(212, 177, 94, 0.38);
+
+    font-weight:
+        700;
 }
 
 
-/* ================================
+/* =========================================================
    POPUP PROBABILITY BREAKDOWN
-================================ */
+========================================================= */
 
 .popup-prob-container {
-    margin-top: 10px;
-    padding: 10px;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
+
+    margin-top:
+        10px;
+
+    padding:
+        10px;
+
+    background:
+        var(--popup-prob-bg);
+
+    border:
+        1px solid var(--popup-border-subtle);
+
+    border-radius:
+        5px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        12px;
 }
+
+
+/* =========================================================
+   PROBABILITY CHART
+========================================================= */
 
 .popup-prob-chart-col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    flex-shrink:
+        0;
 }
+
 
 .popup-mini-donut {
-    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.08));
+
+    /*
+       Remove the old neon glow.
+       The donut's own colours should provide
+       sufficient visual distinction.
+    */
+
+    filter:
+        drop-shadow(
+            0 2px 4px var(--popup-shadow)
+        );
 }
+
+
+/* =========================================================
+   PROBABILITY BARS
+========================================================= */
 
 .popup-prob-bars-col {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+
+    flex-grow:
+        1;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        6px;
 }
+
 
 .popup-bar-item {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        2px;
 }
+
 
 .popup-bar-label {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 11px;
-    font-weight: 600;
-    color: #334155;
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    font-size:
+        10.5px;
+
+    font-weight:
+        600;
+
+    color:
+        var(--popup-text-secondary);
 }
+
+
+/* Small colour indicator */
 
 .dot-sm {
-    display: inline-block;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    margin-right: 4px;
+
+    display:
+        inline-block;
+
+    width:
+        6px;
+
+    height:
+        6px;
+
+    border-radius:
+        50%;
+
+    margin-right:
+        5px;
 }
+
 
 .pct-num {
-    font-family: monospace;
-    font-weight: 700;
-    font-size: 11px;
-    color: #475569;
+
+    font-family:
+        "JetBrains Mono",
+        Consolas,
+        monospace;
+
+    font-weight:
+        700;
+
+    font-size:
+        10.5px;
+
+    color:
+        var(--popup-accent-light);
 }
+
+
+/* =========================================================
+   PROBABILITY BAR
+========================================================= */
 
 .popup-bar-track {
-    width: 100%;
-    height: 5px;
-    background: #e2e8f0;
-    border-radius: 4px;
-    overflow: hidden;
+
+    width:
+        100%;
+
+    height:
+        4px;
+
+    background:
+        var(--popup-track);
+
+    border-radius:
+        2px;
+
+    overflow:
+        hidden;
 }
+
 
 .popup-bar-fill {
-    height: 100%;
-    border-radius: 4px;
-    transition: width 0.3s ease;
+
+    height:
+        100%;
+
+    border-radius:
+        2px;
+
+    transition:
+        width 0.3s ease;
+
+    /*
+       No glow.
+    */
 }
+
+
+/* Industrial */
 
 .ind-fill {
-    background: #8b5cf6;
+
+    background:
+        var(--popup-persistent);
+
+    box-shadow:
+        none;
 }
+
+
+/* Agricultural */
 
 .agr-fill {
-    background: #10b981;
+
+    background:
+        #6FA875;
+
+    box-shadow:
+        none;
 }
+
+
+/* Forest */
 
 .for-fill {
-    background: #f59e0b;
+
+    background:
+        var(--popup-intermittent);
+
+    box-shadow:
+        none;
 }
 
 
-/* ================================
-   POPUP SCROLL
-================================ */
+/* =========================================================
+   POPUP SCROLLBAR
+========================================================= */
 
 .leaflet-popup-content {
-    margin: 12px 14px;
 
-    max-height: 420px;
+    margin:
+        14px 16px;
 
-    overflow-y: auto;
+    max-height:
+        420px;
+
+    overflow-y:
+        auto;
 }
 
 
-/* ================================
-   SCROLLBAR
-================================ */
-
 .leaflet-popup-content::-webkit-scrollbar {
-    width: 5px;
+
+    width:
+        3px;
 }
 
 
 .leaflet-popup-content::-webkit-scrollbar-track {
-    background: #f3f4f6;
 
-    border-radius: 5px;
+    background:
+        transparent;
 }
 
 
 .leaflet-popup-content::-webkit-scrollbar-thumb {
-    background: #9ca3af;
 
-    border-radius: 5px;
+    background:
+        var(--popup-border);
+
+    border-radius:
+        2px;
 }
 
 
 .leaflet-popup-content::-webkit-scrollbar-thumb:hover {
-    background: #6b7280;
+
+    background:
+        var(--popup-accent);
 }
 
 
-/* ================================
+/* =========================================================
    MOBILE POPUP
-================================ */
+========================================================= */
 
 @media (max-width: 600px) {
 
     .fire-popup {
-        min-width: 240px;
 
-        max-width: 280px;
+        min-width:
+            240px;
+
+        max-width:
+            280px;
     }
 
     .fire-popup-title {
-        font-size: 14px;
-    }
 
+        font-size:
+            12px;
+    }
 }

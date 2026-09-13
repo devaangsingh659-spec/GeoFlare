@@ -1,6 +1,127 @@
-/* ================================
-   MAP
-================================ */
+/* =====================================================
+   FIRE DETECTION MAP THEME
+   Calm / Professional / High Contrast
+
+   Dark:
+   Charcoal + warm gold + red + green
+
+   Light:
+   Warm white + charcoal + muted natural colours
+
+   Designed for:
+   Stadia Alidade Smooth Dark / Alidade Smooth
+===================================================== */
+
+
+/* =====================================================
+   DARK THEME
+===================================================== */
+
+:root,
+html[data-theme="dark"] {
+
+    /* Map surroundings */
+    --map-bg: #111416;
+
+    /* Controls */
+    --map-control-bg: rgba(25, 28, 30, 0.97);
+    --map-control-bg-hover: #2A2F32;
+
+    --map-control-text: #C4C7C6;
+    --map-control-text-hover: #D6C28F;
+
+    --map-border: #3A3F42;
+    --map-border-hover: #665B43;
+
+    /* Attribution */
+    --map-attribution-bg: rgba(15, 18, 20, 0.92);
+    --map-attribution-text: #7C8182;
+    --map-attribution-link: #A9ADAC;
+
+    /* Message */
+    --map-message-bg: rgba(25, 28, 30, 0.97);
+    --map-message-text: #D9D7D2;
+
+    /* Main UI accent */
+    --map-accent: #C5A96B;
+
+    /* Fire */
+    --fire-new: #E05A4F;
+    --fire-new-light: #F27A6F;
+
+    /* Recent */
+    --fire-recent: #E6A24B;
+    --fire-recent-light: #F2BE69;
+
+    /* Intermittent */
+    --fire-intermittent: #D4B15E;
+    --fire-intermittent-light: #E4C878;
+
+    /* Persistent */
+    --fire-persistent: #9A82B5;
+    --fire-persistent-light: #B29AC8;
+
+    /* Marker outline */
+    --marker-outline: rgba(255, 255, 255, 0.92);
+
+}
+
+
+/* =====================================================
+   LIGHT THEME
+===================================================== */
+
+html[data-theme="light"] {
+
+    /* Map surroundings */
+--map-bg: #F8FAFC;
+
+/* Controls */
+--map-control-bg: rgba(255, 255, 255, 0.97);
+--map-control-bg-hover: #F1F5F9;
+
+--map-control-text: #0F172A;
+--map-control-text-hover: #2563EB;
+
+--map-border: #E2E8F0;
+--map-border-hover: #CBD5E1;
+
+/* Attribution */
+--map-attribution-bg: rgba(255, 255, 255, 0.92);
+--map-attribution-text: #94A3B8;
+--map-attribution-link: #475569;
+
+/* Message */
+--map-message-bg: rgba(255, 255, 255, 0.97);
+--map-message-text: #0F172A;
+
+/* Main accent */
+--map-accent: #2563EB;
+
+/* Fire */
+--fire-new: #C94036;
+--fire-new-light: #E05B50;
+
+/* Recent */
+--fire-recent: #C77A22;
+--fire-recent-light: #D9943A;
+
+/* Intermittent */
+--fire-intermittent: #AA841F;
+--fire-intermittent-light: #C29D3D;
+
+/* Persistent */
+--fire-persistent: #795F96;
+--fire-persistent-light: #9277AD;
+
+/* Marker outline */
+--marker-outline: rgba(255, 255, 255, 0.95);
+}
+
+
+/* =====================================================
+   MAP CONTAINER
+===================================================== */
 
 .map-container {
     flex: 1;
@@ -8,144 +129,365 @@
     position: relative;
 
     min-width: 0;
-}
 
+    background:
+        var(--map-bg);
+
+    transition:
+        background-color 0.25s ease;
+}
 
 #map {
     width: 100%;
     height: 100%;
+
+    background:
+        var(--map-bg);
 }
 
 
-/* ================================
-   MAP MESSAGE
-================================ */
+/*
+   IMPORTANT:
 
-.map-message {
-    position: absolute;
+   Do NOT invert, grayscale, or recolor the raster tiles.
 
-    top: 15px;
-    left: 50%;
-
-    transform: translateX(-50%);
-
-    background: rgba(17, 24, 39, 0.9);
-
-    color: white;
-
-    padding: 9px 15px;
-
-    border-radius: 20px;
-
-    font-size: 12px;
-
-    z-index: 1000;
-
-    pointer-events: none;
-}
+   Alidade Smooth Dark is already designed as a dark
+   subdued basemap for overlays and markers.
+*/
 
 
-/* ================================
-   FIRE MARKER
-================================ */
+/* =====================================================
+   LEAFLET CONTROLS
+===================================================== */
 
-.fire-icon {
-    width: 24px;
-    height: 24px;
+.leaflet-bar {
 
-    background: #ef4444;
-
-    border: 3px solid white;
-
-    border-radius: 50%;
+    border:
+        1px solid var(--map-border) !important;
 
     box-shadow:
-        0 2px 6px rgba(0, 0, 0, 0.4);
+        0 4px 12px rgba(0, 0, 0, 0.38) !important;
 
-    display: flex;
+    border-radius:
+        6px !important;
 
-    align-items: center;
+    overflow:
+        hidden;
+}
 
-    justify-content: center;
 
-    font-size: 13px;
+.leaflet-bar a,
+.leaflet-control-zoom a,
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+
+    background:
+        var(--map-control-bg) !important;
+
+    color:
+        var(--map-control-text) !important;
+
+    border-bottom:
+        1px solid rgba(128, 128, 128, 0.18) !important;
+
+    backdrop-filter:
+        blur(5px);
 
     transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+        background-color 0.18s ease,
+        color 0.18s ease,
+        border-color 0.18s ease;
 }
 
 
-/* ================================
-   PERSISTENCE MARKERS
-================================ */
+.leaflet-bar a:last-child {
+    border-bottom: none !important;
+}
 
 
-/*
-   NEW
-   Very fresh detection.
+.leaflet-bar a:hover,
+.leaflet-control-zoom a:hover,
+.leaflet-control-zoom-in:hover,
+.leaflet-control-zoom-out:hover {
 
-   Conditions are determined by the
-   backend persistence service.
-*/
+    background:
+        var(--map-control-bg-hover) !important;
+
+    color:
+        var(--map-control-text-hover) !important;
+}
+
+
+/* =====================================================
+   MAP ATTRIBUTION
+===================================================== */
+
+.leaflet-control-attribution {
+
+    background:
+        var(--map-attribution-bg) !important;
+
+    color:
+        var(--map-attribution-text) !important;
+
+    border-radius:
+        5px 0 0 0;
+
+    backdrop-filter:
+        blur(4px);
+
+    font-size:
+        10px !important;
+
+    box-shadow:
+        none;
+}
+
+
+.leaflet-control-attribution a {
+
+    color:
+        var(--map-attribution-link) !important;
+}
+
+/* =====================================================
+   FLOATING MAP MESSAGE
+===================================================== */
+
+.map-message {
+
+    position: absolute;
+
+    top: 18px;
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        var(--map-message-bg);
+
+    color:
+        var(--map-message-text);
+
+    padding:
+        8px 17px;
+
+    border-radius:
+        6px;
+
+    font-family:
+        "Inter",
+        sans-serif;
+
+    font-size:
+        12px;
+
+    font-weight:
+        500;
+
+    letter-spacing:
+        0.15px;
+
+    border:
+        1px solid var(--map-border);
+
+    box-shadow:
+        0 4px 14px rgba(0, 0, 0, 0.32);
+
+    backdrop-filter:
+        blur(5px);
+
+    -webkit-backdrop-filter:
+        blur(5px);
+
+    z-index:
+        1000;
+
+    pointer-events:
+        none;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        8px;
+}
+
+
+/* =====================================================
+   BASE FIRE ICON
+===================================================== */
+
+.fire-icon {
+
+    width:
+        28px;
+
+    height:
+        28px;
+
+    background:
+        var(--fire-new);
+
+    border:
+        2px solid var(--marker-outline);
+
+    border-radius:
+        50%;
+
+    /*
+       NO glow.
+
+       The marker is made visible through:
+       - saturation
+       - contrast
+       - white outline
+       - size
+       - subtle shadow
+    */
+
+    box-shadow:
+        0 2px 7px rgba(0, 0, 0, 0.55);
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    font-size:
+        13px;
+
+    cursor:
+        pointer;
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+
+/* =====================================================
+   NEW — RED
+===================================================== */
 
 .fire-icon.persistence-new {
-    background: #ef4444;
+
+    background:
+        #E05A4F;
+
+    border-color:
+        #FFFFFF;
 
     box-shadow:
-        0 2px 8px rgba(239, 68, 68, 0.45);
+        0 2px 8px rgba(0, 0, 0, 0.60);
+
+    animation:
+        none;
 }
 
 
-/*
-   RECENT
-   One observation today but older
-   than the NEW threshold.
-*/
+/* =====================================================
+   RECENT — ORANGE / AMBER
+===================================================== */
 
 .fire-icon.persistence-recent {
-    background: #2563eb;
+
+    background:
+        #E6A24B;
+
+    border-color:
+        #FFF8E8;
 
     box-shadow:
-        0 2px 8px rgba(37, 99, 235, 0.45);
+        0 2px 8px rgba(0, 0, 0, 0.60);
 }
 
 
-/*
-   INTERMITTENT
-   Multiple observations during today,
-   but no observation on a previous day.
-*/
+/* =====================================================
+   INTERMITTENT — GOLD
+===================================================== */
 
 .fire-icon.persistence-intermittent {
-    background: #f59e0b;
+
+    background:
+        #D4B15E;
+
+    border-color:
+        #FFF9E5;
 
     box-shadow:
-        0 2px 8px rgba(245, 158, 11, 0.5);
+        0 2px 8px rgba(0, 0, 0, 0.60);
+}
+
+
+/* =====================================================
+   PERSISTENT — MUTED VIOLET
+===================================================== */
+
+.fire-icon.persistence-persistent {
+
+    background:
+        #9A82B5;
+
+    border-color:
+        #F8F3FF;
+
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.60);
+}
+
+
+/* =====================================================
+   MARKER HOVER
+===================================================== */
+
+.fire-icon:hover {
+
+    transform:
+        scale(1.18);
+
+    z-index:
+        9999 !important;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.65);
 }
 
 
 /*
-   PERSISTENT
-   Detected today and also detected
-   on at least one previous day.
+   Notice that hover does NOT introduce a glow.
+
+   This keeps the interface calm even when the user
+   moves across many markers.
 */
 
-.fire-icon.persistence-persistent {
-    background: #7c3aed;
 
-    box-shadow:
-        0 2px 10px rgba(124, 58, 237, 0.55);
+/* =====================================================
+   LIGHT THEME — MARKER OUTLINES
+
+   On a light map, a dark outline gives better separation.
+===================================================== */
+
+html[data-theme="light"] .fire-icon.persistence-new {
+    border-color: #7cdef2;
 }
 
+html[data-theme="light"] .fire-icon.persistence-recent {
+    border-color: #FFFDF7;
+}
 
-/* ================================
-   CLUSTER / HOVER
-================================ */
+html[data-theme="light"] .fire-icon.persistence-intermittent {
+    border-color: #FFFDF5;
+}
 
-.fire-icon:hover {
-    transform: scale(1.15);
-
-    box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.45);
+html[data-theme="light"] .fire-icon.persistence-persistent {
+    border-color: #FFFFFF;
 }
