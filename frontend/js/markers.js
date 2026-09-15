@@ -24,173 +24,80 @@ function clearFireMarkers() {
 ========================================= */
 
 function createFireMarker(fire) {
+    // -----------------------------
+    // Classification
+    // -----------------------------
+    const rawClassification = String(
+        fire.detection_type ?? ""
+    ).toLowerCase();
 
-    /*
-        Persistence status comes directly
-        from the backend.
-
-        NEW
-        RECENT
-        INTERMITTENT
-        PERSISTENT
-    */
-
-    const persistenceStatus =
-        fire.persistence_status
-            ? fire.persistence_status.toLowerCase()
-            : "recent";
-
-
-    const icon =
-        L.divIcon({
-
-            className: "",
-
-            html: `
-                <div class="
-                    fire-icon
-                    persistence-${persistenceStatus}
-                ">
-                    🔥
-                </div>
-            `,
-
-            iconSize: [24, 24],
-
-            iconAnchor: [12, 12],
-
-            popupAnchor: [0, -12]
-
-        });
-
-
-    const marker =
-        L.marker(
-            [
-                fire.latitude,
-                fire.longitude
-            ],
-            {
-                icon: icon
-            }
-        );
-
-
-    /*
-        Create popup content.
-
-        The popup itself is also given
-        classification + persistence classes
-        so popup.css can style the two
-        dimensions independently.
-    */
-
-    const popupContent =
-        createFirePopup(fire);
-
-
-    /*
-        Normalize classification for CSS.
-
-        Examples:
-
-        INDUSTRIAL
-            -> industrial
-
-        AGRICULTURAL
-            -> agricultural
-
-        AGRICULTURE
-            -> agricultural
-
-        FOREST
-            -> forest
-
-        FOREST_FIRE
-            -> forest
-    */
-
-    const classification =
-        fire.detection_type
-            ? fire.detection_type
-                .toString()
-                .toLowerCase()
-            : "unknown";
-
-
-    let classificationClass = "unknown";
-
+    let classificationClass = "industrial";
 
     if (
-        classification === "industrial"
+        rawClassification.includes("agricultural") ||
+        rawClassification.includes("agriculture")
     ) {
-
-        classificationClass =
-            "industrial";
-
+        classificationClass = "agricultural";
     } else if (
-        classification === "agricultural" ||
-        classification === "agriculture"
+        rawClassification.includes("forest") ||
+        rawClassification.includes("forest_fire")
     ) {
-
-        classificationClass =
-            "agricultural";
-
-    } else if (
-        classification === "forest" ||
-        classification === "forest_fire"
-    ) {
-
-        classificationClass =
-            "forest";
+        classificationClass = "forest";
     }
 
+    // -----------------------------
+    // Persistence
+    // -----------------------------
+    const persistenceStatus = String(
+        fire.persistence_status ?? "RECENT"
+    ).toLowerCase();
 
-    /*
-        Normalize persistence.
+    const validPersistence = [
+        "new",
+        "recent",
+        "intermittent",
+        "persistent"
+    ];
 
-        This is kept separate from classification.
-    */
+    const persistenceClass = validPersistence.includes(persistenceStatus)
+        ? persistenceStatus
+        : "recent";
 
-    const persistenceClass =
-        [
-            "new",
-            "recent",
-            "intermittent",
-            "persistent"
-        ].includes(persistenceStatus)
-            ? persistenceStatus
-            : "recent";
+    // -----------------------------
+    // Marker
+    // -----------------------------
+    const markerIcon = L.divIcon({
+        className: "",
+        html: `
+            <div class="
+                fire-icon
+                class-${classificationClass}
+                persistence-${persistenceClass}
+            ">🔥</div>
+        `,
+        iconSize: [28, 28],
+        iconAnchor: [14, 14],
+        popupAnchor: [0, -14]
+    });
 
-
-    /*
-        Leaflet popup classes.
-
-        These classes are attached to the
-        OUTER .leaflet-popup element.
-
-        popup.css can therefore use:
-
-        .leaflet-popup.popup-class-forest
-        .leaflet-popup.popup-persistence-new
-
-        etc.
-    */
-
-    const popupClassName = [
-        "fire-detection-popup",
-        `popup-class-${classificationClass}`,
-        `popup-persistence-${persistenceClass}`
-    ].join(" ");
-
-
-    marker.bindPopup(
-        popupContent,
+    const marker = L.marker(
+        [fire.latitude, fire.longitude],
         {
-            className: popupClassName
+            icon: markerIcon
         }
     );
 
+    // Popup
+    const popupContent = createFirePopup(fire);
+
+    const popupClassName =
+        `fire-detection-popup ` +
+        `popup-class-${classificationClass} ` +
+        `popup-persistence-${persistenceClass}`;
+
+    marker.bindPopup(popupContent, {
+        className: popupClassName
+    });
 
     return marker;
 }
@@ -779,151 +686,89 @@ function createFirePopup(fire) {
 ========================================= */
 
 function generateDonutSVG(
-    pInd,
-    pAgr,
-    pFor
+    industrial,
+    agricultural,
+    forest,
+    size = 90
 ) {
+    const total = industrial + agricultural + forest;
 
-    const total =
-        pInd +
-        pAgr +
-        pFor;
+    if (total <= 0) {
+        return "";
+    }
 
+    const industrialPercent = industrial / total;
+    const agriculturalPercent = agricultural / total;
+    const forestPercent = forest / total;
 
-    const normInd =
-        total > 0
-            ? pInd / total
-            : 0.333;
+    const radius = 32;
+    const circumference = 2 * Math.PI * radius;
 
+    const industrialLength =
+        circumference * industrialPercent;
 
-    const normAgr =
-        total > 0
-            ? pAgr / total
-            : 0.333;
+    const agriculturalLength =
+        circumference * agriculturalPercent;
 
-
-    const normFor =
-        total > 0
-            ? pFor / total
-            : 0.334;
-
-
-    const r = 20;
-
-    const cx = 28;
-
-    const cy = 28;
-
-    const circ =
-        2 * Math.PI * r;
-
-
-    const strokeInd =
-        Math.max(
-            0.01,
-            normInd * circ
-        );
-
-
-    const strokeAgr =
-        Math.max(
-            0.01,
-            normAgr * circ
-        );
-
-
-    const strokeFor =
-        Math.max(
-            0.01,
-            normFor * circ
-        );
-
-
-    const offsetInd =
-        0;
-
-
-    const offsetAgr =
-        -strokeInd;
-
-
-    const offsetFor =
-        -(strokeInd + strokeAgr);
-
-
-    const topPct =
-        (
-            Math.max(
-                normInd,
-                normAgr,
-                normFor
-            ) * 100
-        ).toFixed(0);
-
+    const forestLength =
+        circumference * forestPercent;
 
     return `
         <svg
-            width="56"
-            height="56"
-            viewBox="0 0 56 56"
-            class="popup-mini-donut"
+            width="${size}"
+            height="${size}"
+            viewBox="0 0 80 80"
+            class="probability-donut"
         >
 
+            <!-- Industrial -->
             <circle
-                cx="${cx}"
-                cy="${cy}"
-                r="${r}"
+                cx="40"
+                cy="40"
+                r="${radius}"
                 fill="none"
-                stroke="#e5e7eb"
-                stroke-width="7"
+                stroke="var(--class-industrial)"
+                stroke-width="12"
+                stroke-dasharray="${industrialLength} ${circumference}"
+                stroke-dashoffset="0"
+                transform="rotate(-90 40 40)"
             />
 
+            <!-- Agricultural -->
             <circle
-                cx="${cx}"
-                cy="${cy}"
-                r="${r}"
+                cx="40"
+                cy="40"
+                r="${radius}"
                 fill="none"
-                stroke="#8b5cf6"
-                stroke-width="7"
-                stroke-dasharray="${strokeInd} ${circ}"
-                stroke-dashoffset="${offsetInd}"
-                transform="rotate(-90 ${cx} ${cy})"
+                stroke="var(--class-agricultural)"
+                stroke-width="12"
+                stroke-dasharray="${agriculturalLength} ${circumference}"
+                stroke-dashoffset="${-industrialLength}"
+                transform="rotate(-90 40 40)"
             />
 
+            <!-- Forest -->
             <circle
-                cx="${cx}"
-                cy="${cy}"
-                r="${r}"
+                cx="40"
+                cy="40"
+                r="${radius}"
                 fill="none"
-                stroke="#10b981"
-                stroke-width="7"
-                stroke-dasharray="${strokeAgr} ${circ}"
-                stroke-dashoffset="${offsetAgr}"
-                transform="rotate(-90 ${cx} ${cy})"
+                stroke="var(--class-forest)"
+                stroke-width="12"
+                stroke-dasharray="${forestLength} ${circumference}"
+                stroke-dashoffset="${
+                    -(industrialLength + agriculturalLength)
+                }"
+                transform="rotate(-90 40 40)"
             />
 
+            <!-- Center -->
             <circle
-                cx="${cx}"
-                cy="${cy}"
-                r="${r}"
-                fill="none"
-                stroke="#f59e0b"
-                stroke-width="7"
-                stroke-dasharray="${strokeFor} ${circ}"
-                stroke-dashoffset="${offsetFor}"
-                transform="rotate(-90 ${cx} ${cy})"
+                cx="40"
+                cy="40"
+                r="24"
+                fill="var(--bg-card)"
             />
-
-            <text
-                x="${cx}"
-                y="${cy + 4}"
-                text-anchor="middle"
-                font-size="9"
-                font-weight="700"
-                fill="#111827"
-            >
-                ${topPct}%
-            </text>
 
         </svg>
     `;
