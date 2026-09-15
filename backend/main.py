@@ -12,7 +12,7 @@ app = FastAPI(
     title="Satellite Fire Detection API",
     description=(
         "Backend for NASA FIRMS based "
-        "satellite fire detection and classification."
+        "satellite fire detections and classification."
     ),
     version="1.0.0"
 )
