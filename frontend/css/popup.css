@@ -1,92 +1,122 @@
 /* =========================================================
-   FIRE DETECTION — LEAFLET POPUPS
-   Calm / Professional / Dark + Light Theme
+   FIREWATCH POPUP THEME
+
+   INFORMATION HIERARCHY
+   ---------------------
+   CLASSIFICATION = Popup identity / content colours
+       Industrial   → Grey
+       Agricultural → Earth / Mitti
+       Forest       → Dark Green
+
+   PERSISTENCE = Popup border / status colours
+       New          → Red
+       Recent       → Orange
+       Intermittent → Yellow
+       Persistent   → Violet
+
+   Design:
+   Calm / Professional / No Neon / No Glow
 ========================================================= */
 
 
 /* =========================================================
-   POPUP THEME VARIABLES
-   These use the same theme system as style.css / map.css.
+   THEME VARIABLES
 ========================================================= */
 
 :root,
-:root[data-theme="dark"] {
+html[data-theme="dark"] {
 
-    /* Popup surface */
+    /* -----------------------------------------------------
+       CLASSIFICATION
+    ----------------------------------------------------- */
+
+    /* Industrial */
+    --class-industrial: #8A8F8D;
+    --class-industrial-bg: rgba(138, 143, 141, 0.13);
+
+    /* Forest */
+    --class-forest: #3F654A;
+    --class-forest-bg: rgba(63, 101, 74, 0.14);
+
+    /* Agricultural */
+    --class-agricultural: #9A7653;
+    --class-agricultural-bg: rgba(154, 118, 83, 0.14);
+
+
+    /* -----------------------------------------------------
+       PERSISTENCE
+    ----------------------------------------------------- */
+
+    --persistence-new: #D94A42;
+    --persistence-recent: #D88732;
+    --persistence-intermittent: #C6A532;
+    --persistence-persistent: #866FA3;
+
+
+    /* -----------------------------------------------------
+       POPUP SURFACES
+    ----------------------------------------------------- */
+
     --popup-bg: #202427;
     --popup-bg-secondary: #191D1F;
 
-    /* Borders */
-    --popup-border: #3A3F42;
-    --popup-border-subtle: #303538;
-
-    /* Text */
     --popup-text: #E8E6E1;
     --popup-text-secondary: #B0B2B1;
     --popup-text-muted: #7C8182;
 
-    /* Accent */
-    --popup-accent: #C5A96B;
-    --popup-accent-light: #D5BD87;
+    --popup-border-neutral: #3A3F42;
+    --popup-border-subtle: #303538;
 
-    /* Classification */
-    --popup-new: #E05A4F;
-    --popup-recent: #E6A24B;
-    --popup-intermittent: #D4B15E;
-    --popup-persistent: #9A82B5;
-
-    /* Classification fills */
-    --popup-new-bg: rgba(224, 90, 79, 0.12);
-    --popup-recent-bg: rgba(230, 162, 75, 0.12);
-    --popup-intermittent-bg: rgba(212, 177, 94, 0.12);
-    --popup-persistent-bg: rgba(154, 130, 181, 0.12);
-
-    /* Probability chart */
-    --popup-prob-bg: #191D1F;
-    --popup-track: #303538;
-
-    /* Shadow */
-    --popup-shadow: rgba(0, 0, 0, 0.50);
+    --popup-shadow:
+        rgba(0, 0, 0, 0.45);
 }
 
 
-:root[data-theme="light"] {
+html[data-theme="light"] {
 
-    /* Popup surface */
---popup-bg: #FFFFFF;
---popup-bg-secondary: #F8FAFC;
+    /* -----------------------------------------------------
+       CLASSIFICATION
+    ----------------------------------------------------- */
 
-/* Borders */
---popup-border: #E2E8F0;
---popup-border-subtle: #EDF2F7;
+    /* Industrial */
+    --class-industrial: #6F7572;
+    --class-industrial-bg: rgba(111, 117, 114, 0.10);
 
-/* Text */
---popup-text: #0F172A;
---popup-text-secondary: #475569;
---popup-text-muted: #94A3B8;
+    /* Forest */
+    --class-forest: #34583F;
+    --class-forest-bg: rgba(52, 88, 63, 0.10);
 
-/* Accent */
---popup-accent: #2563EB;
---popup-accent-light: #3B82F6;
+    /* Agricultural */
+    --class-agricultural: #896747;
+    --class-agricultural-bg: rgba(137, 103, 71, 0.10);
 
-/* Classification */
---popup-new: #C94036;
---popup-recent: #C77A22;
---popup-intermittent: #AA841F;
---popup-persistent: #795F96;
 
-/* Classification fills */
---popup-new-bg: rgba(201, 64, 54, 0.10);
---popup-recent-bg: rgba(199, 122, 34, 0.10);
---popup-intermittent-bg: rgba(170, 132, 31, 0.10);
---popup-persistent-bg: rgba(121, 95, 150, 0.10);
+    /* -----------------------------------------------------
+       PERSISTENCE
+    ----------------------------------------------------- */
 
-/* Probability chart */
---popup-prob-bg: #F8FAFC;
---popup-track: #E2E8F0;
+    --persistence-new: #C94036;
+    --persistence-recent: #C77A22;
+    --persistence-intermittent: #AA841F;
+    --persistence-persistent: #795F96;
 
-/* Shadow */
---popup-shadow: rgba(15, 23, 42, 0.12);
+
+    /* -----------------------------------------------------
+       POPUP SURFACES
+    ----------------------------------------------------- */
+
+    --popup-bg: #FFFFFF;
+    --popup-bg-secondary: #F5F3EE;
+
+    --popup-text: #292D2C;
+    --popup-text-secondary: #5D6260;
+    --popup-text-muted: #858987;
+
+    --popup-border-neutral: #D0CCC2;
+    --popup-border-subtle: #DEDAD1;
+
+    --popup-shadow:
+        rgba(0, 0, 0, 0.18);
 }
 
 
@@ -103,7 +133,7 @@
         var(--popup-text) !important;
 
     border:
-        1px solid var(--popup-border) !important;
+        2px solid var(--popup-border-neutral) !important;
 
     border-radius:
         6px !important;
@@ -117,36 +147,9 @@
     position:
         relative;
 
-    /*
-       Keep the popup crisp.
-
-       No heavy glassmorphism.
-       No neon glow.
-    */
-}
-
-
-/* =========================================================
-   SMALL TOP ACCENT
-========================================================= */
-
-.leaflet-popup-content-wrapper::before {
-
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    left: 0;
-
-    width: 20px;
-    height: 2px;
-
-    background:
-        var(--popup-accent);
-
-    box-shadow:
-        none;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
 }
 
 
@@ -160,15 +163,19 @@
         var(--popup-bg) !important;
 
     border:
-        1px solid var(--popup-border) !important;
+        1px solid var(--popup-border-neutral) !important;
 
     box-shadow:
-        0 4px 10px var(--popup-shadow) !important;
+        none !important;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
 }
 
 
 /* =========================================================
-   CLOSE BUTTON
+   POPUP CLOSE BUTTON
 ========================================================= */
 
 .leaflet-popup-close-button {
@@ -186,18 +193,188 @@
         8px !important;
 
     transition:
-        color 0.18s ease,
-        transform 0.18s ease !important;
+        color 0.2s ease,
+        transform 0.2s ease !important;
 }
 
 
 .leaflet-popup-close-button:hover {
 
     color:
-        var(--popup-accent) !important;
+        var(--popup-text) !important;
 
     transform:
-        scale(1.10) !important;
+        scale(1.1) !important;
+}
+
+
+/* =========================================================
+   POPUP BORDER = PERSISTENCE
+========================================================= */
+
+/*
+   The classification determines the popup's internal
+   visual identity.
+
+   Persistence determines the OUTER BORDER.
+*/
+
+
+/* ---------------------------------------------------------
+   NEW — RED
+--------------------------------------------------------- */
+
+.leaflet-popup:has(.persistence-new)
+.leaflet-popup-content-wrapper {
+
+    border-color:
+        var(--persistence-new) !important;
+}
+
+
+.leaflet-popup:has(.persistence-new)
+.leaflet-popup-tip {
+
+    border-color:
+        var(--persistence-new) !important;
+}
+
+
+/* ---------------------------------------------------------
+   RECENT — ORANGE
+--------------------------------------------------------- */
+
+.leaflet-popup:has(.persistence-recent)
+.leaflet-popup-content-wrapper {
+
+    border-color:
+        var(--persistence-recent) !important;
+}
+
+
+.leaflet-popup:has(.persistence-recent)
+.leaflet-popup-tip {
+
+    border-color:
+        var(--persistence-recent) !important;
+}
+
+
+/* ---------------------------------------------------------
+   INTERMITTENT — YELLOW
+--------------------------------------------------------- */
+
+.leaflet-popup:has(.persistence-intermittent)
+.leaflet-popup-content-wrapper {
+
+    border-color:
+        var(--persistence-intermittent) !important;
+}
+
+
+.leaflet-popup:has(.persistence-intermittent)
+.leaflet-popup-tip {
+
+    border-color:
+        var(--persistence-intermittent) !important;
+}
+
+
+/* ---------------------------------------------------------
+   PERSISTENT — VIOLET
+--------------------------------------------------------- */
+
+.leaflet-popup:has(.persistence-persistent)
+.leaflet-popup-content-wrapper {
+
+    border-color:
+        var(--persistence-persistent) !important;
+}
+
+
+.leaflet-popup:has(.persistence-persistent)
+.leaflet-popup-tip {
+
+    border-color:
+        var(--persistence-persistent) !important;
+}
+
+
+/* =========================================================
+   CLASSIFICATION ACCENT
+========================================================= */
+
+/*
+   Small top accent follows CLASSIFICATION,
+   not persistence.
+*/
+
+
+/* Industrial */
+
+.leaflet-popup-content-wrapper:has(.badge-industrial)::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 18px;
+    height: 2px;
+
+    background:
+        var(--class-industrial);
+
+    box-shadow:
+        none;
+}
+
+
+/* Agricultural */
+
+.leaflet-popup-content-wrapper:has(.badge-agricultural)::before,
+.leaflet-popup-content-wrapper:has(.badge-agriculture)::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 18px;
+    height: 2px;
+
+    background:
+        var(--class-agricultural);
+
+    box-shadow:
+        none;
+}
+
+
+/* Forest */
+
+.leaflet-popup-content-wrapper:has(.badge-forest)::before,
+.leaflet-popup-content-wrapper:has(.badge-forest_fire)::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 18px;
+    height: 2px;
+
+    background:
+        var(--class-forest);
+
+    box-shadow:
+        none;
 }
 
 
@@ -225,7 +402,7 @@
         13px;
 
     font-weight:
-        700;
+        800;
 
     font-family:
         "JetBrains Mono",
@@ -233,7 +410,7 @@
         monospace;
 
     letter-spacing:
-        0.6px;
+        0.8px;
 
     text-transform:
         uppercase;
@@ -313,7 +490,7 @@
         11px;
 
     letter-spacing:
-        0.25px;
+        0.3px;
 }
 
 
@@ -324,7 +501,7 @@
 .fire-popup-value {
 
     font-weight:
-        650;
+        700;
 
     color:
         var(--popup-text);
@@ -362,13 +539,13 @@
         3px;
 
     background:
-        var(--popup-new-bg);
+        rgba(127, 127, 127, 0.10);
 
     color:
-        var(--popup-new);
+        var(--popup-text-secondary);
 
     border:
-        1px solid rgba(224, 90, 79, 0.40);
+        1px solid var(--popup-border-neutral);
 
     font-size:
         10px;
@@ -382,7 +559,7 @@
         700;
 
     letter-spacing:
-        0.5px;
+        0.6px;
 
     text-transform:
         uppercase;
@@ -411,7 +588,7 @@
         10.5px;
 
     font-weight:
-        700;
+        800;
 
     font-family:
         "JetBrains Mono",
@@ -422,7 +599,7 @@
         uppercase;
 
     letter-spacing:
-        0.7px;
+        0.8px;
 
     color:
         var(--popup-text-muted);
@@ -430,19 +607,91 @@
 
 
 /* =========================================================
-   PERSISTENCE BADGES
+   CLASSIFICATION BADGES
 ========================================================= */
+
+
+/* ---------------------------------------------------------
+   INDUSTRIAL — GREY
+--------------------------------------------------------- */
+
+.badge-industrial {
+
+    background:
+        var(--class-industrial-bg);
+
+    color:
+        var(--class-industrial);
+
+    border:
+        1px solid var(--class-industrial);
+
+    font-weight:
+        700;
+}
+
+
+/* ---------------------------------------------------------
+   AGRICULTURAL — MITTI / EARTH
+--------------------------------------------------------- */
+
+.badge-agricultural,
+.badge-agriculture {
+
+    background:
+        var(--class-agricultural-bg);
+
+    color:
+        var(--class-agricultural);
+
+    border:
+        1px solid var(--class-agricultural);
+
+    font-weight:
+        700;
+}
+
+
+/* ---------------------------------------------------------
+   FOREST — DARK GREEN
+--------------------------------------------------------- */
+
+.badge-forest,
+.badge-forest_fire {
+
+    background:
+        var(--class-forest-bg);
+
+    color:
+        var(--class-forest);
+
+    border:
+        1px solid var(--class-forest);
+
+    font-weight:
+        700;
+}
+
+
+/* =========================================================
+   PERSISTENCE STATUS BADGES
+========================================================= */
+
+
+/* ---------------------------------------------------------
+   NEW — RED
+--------------------------------------------------------- */
 
 .persistence-new {
 
     background:
-        var(--popup-new-bg);
+        rgba(217, 74, 66, 0.12);
 
     color:
-        var(--popup-new);
+        var(--persistence-new);
 
     border:
-        1px solid rgba(224, 90, 79, 0.42);
+        1px solid rgba(217, 74, 66, 0.45);
 
     font-weight:
         700;
@@ -456,17 +705,21 @@
         none;
 }
 
+
+/* ---------------------------------------------------------
+   RECENT — ORANGE
+--------------------------------------------------------- */
 
 .persistence-recent {
 
     background:
-        var(--popup-recent-bg);
+        rgba(216, 135, 50, 0.12);
 
     color:
-        var(--popup-recent);
+        var(--persistence-recent);
 
     border:
-        1px solid rgba(230, 162, 75, 0.42);
+        1px solid rgba(216, 135, 50, 0.45);
 
     font-weight:
         700;
@@ -480,17 +733,21 @@
         none;
 }
 
+
+/* ---------------------------------------------------------
+   INTERMITTENT — YELLOW
+--------------------------------------------------------- */
 
 .persistence-intermittent {
 
     background:
-        var(--popup-intermittent-bg);
+        rgba(198, 165, 50, 0.12);
 
     color:
-        var(--popup-intermittent);
+        var(--persistence-intermittent);
 
     border:
-        1px solid rgba(212, 177, 94, 0.42);
+        1px solid rgba(198, 165, 50, 0.45);
 
     font-weight:
         700;
@@ -505,16 +762,20 @@
 }
 
 
+/* ---------------------------------------------------------
+   PERSISTENT — VIOLET
+--------------------------------------------------------- */
+
 .persistence-persistent {
 
     background:
-        var(--popup-persistent-bg);
+        rgba(134, 111, 163, 0.12);
 
     color:
-        var(--popup-persistent);
+        var(--persistence-persistent);
 
     border:
-        1px solid rgba(154, 130, 181, 0.42);
+        1px solid rgba(134, 111, 163, 0.45);
 
     font-weight:
         700;
@@ -548,7 +809,7 @@
         1px solid var(--popup-border-subtle);
 
     border-left:
-        3px solid var(--popup-accent);
+        3px solid var(--popup-border-neutral);
 
     border-radius:
         3px;
@@ -564,26 +825,33 @@
 }
 
 
-/* Persistence-specific accent */
+/* Persistence-specific reason border */
 
 .persistence-new + .fire-popup-reason {
+
     border-left-color:
-        var(--popup-new);
+        var(--persistence-new);
 }
+
 
 .persistence-recent + .fire-popup-reason {
+
     border-left-color:
-        var(--popup-recent);
+        var(--persistence-recent);
 }
+
 
 .persistence-intermittent + .fire-popup-reason {
+
     border-left-color:
-        var(--popup-intermittent);
+        var(--persistence-intermittent);
 }
 
+
 .persistence-persistent + .fire-popup-reason {
+
     border-left-color:
-        var(--popup-persistent);
+        var(--persistence-persistent);
 }
 
 
@@ -617,7 +885,7 @@
 .ml-pending {
 
     color:
-        var(--popup-intermittent);
+        var(--persistence-intermittent);
 
     font-weight:
         700;
@@ -632,7 +900,7 @@
 .ml-completed {
 
     color:
-        #6FA875;
+        #4E8A67;
 
     font-weight:
         700;
@@ -647,7 +915,7 @@
 .ml-failed {
 
     color:
-        var(--popup-new);
+        var(--persistence-new);
 
     font-weight:
         700;
@@ -656,66 +924,6 @@
         "JetBrains Mono",
         Consolas,
         monospace;
-}
-
-
-/* =========================================================
-   CLASS BADGES
-========================================================= */
-
-/* Industrial */
-
-.badge-industrial {
-
-    background:
-        var(--popup-persistent-bg);
-
-    color:
-        var(--popup-persistent);
-
-    border:
-        1px solid rgba(154, 130, 181, 0.40);
-
-    font-weight:
-        700;
-}
-
-
-/* Agricultural */
-
-.badge-agricultural,
-.badge-agriculture {
-
-    background:
-        rgba(111, 168, 117, 0.11);
-
-    color:
-        #6FA875;
-
-    border:
-        1px solid rgba(111, 168, 117, 0.38);
-
-    font-weight:
-        700;
-}
-
-
-/* Forest */
-
-.badge-forest,
-.badge-forest_fire {
-
-    background:
-        rgba(212, 177, 94, 0.11);
-
-    color:
-        var(--popup-intermittent);
-
-    border:
-        1px solid rgba(212, 177, 94, 0.38);
-
-    font-weight:
-        700;
 }
 
 
@@ -732,7 +940,7 @@
         10px;
 
     background:
-        var(--popup-prob-bg);
+        var(--popup-bg-secondary);
 
     border:
         1px solid var(--popup-border-subtle);
@@ -750,10 +958,6 @@
         12px;
 }
 
-
-/* =========================================================
-   PROBABILITY CHART
-========================================================= */
 
 .popup-prob-chart-col {
 
@@ -776,22 +980,10 @@
 
 .popup-mini-donut {
 
-    /*
-       Remove the old neon glow.
-       The donut's own colours should provide
-       sufficient visual distinction.
-    */
-
     filter:
-        drop-shadow(
-            0 2px 4px var(--popup-shadow)
-        );
+        none;
 }
 
-
-/* =========================================================
-   PROBABILITY BARS
-========================================================= */
 
 .popup-prob-bars-col {
 
@@ -844,8 +1036,6 @@
 }
 
 
-/* Small colour indicator */
-
 .dot-sm {
 
     display:
@@ -879,12 +1069,13 @@
         10.5px;
 
     color:
-        var(--popup-accent-light);
+        var(--popup-text-secondary);
 }
 
 
 /* =========================================================
-   PROBABILITY BAR
+   PROBABILITY BARS
+   Classification colours
 ========================================================= */
 
 .popup-bar-track {
@@ -896,7 +1087,7 @@
         4px;
 
     background:
-        var(--popup-track);
+        rgba(127, 127, 127, 0.14);
 
     border-radius:
         2px;
@@ -916,10 +1107,6 @@
 
     transition:
         width 0.3s ease;
-
-    /*
-       No glow.
-    */
 }
 
 
@@ -928,7 +1115,7 @@
 .ind-fill {
 
     background:
-        var(--popup-persistent);
+        var(--class-industrial);
 
     box-shadow:
         none;
@@ -940,7 +1127,7 @@
 .agr-fill {
 
     background:
-        #6FA875;
+        var(--class-agricultural);
 
     box-shadow:
         none;
@@ -952,7 +1139,7 @@
 .for-fill {
 
     background:
-        var(--popup-intermittent);
+        var(--class-forest);
 
     box-shadow:
         none;
@@ -993,7 +1180,7 @@
 .leaflet-popup-content::-webkit-scrollbar-thumb {
 
     background:
-        var(--popup-border);
+        var(--popup-border-neutral);
 
     border-radius:
         2px;
@@ -1003,7 +1190,7 @@
 .leaflet-popup-content::-webkit-scrollbar-thumb:hover {
 
     background:
-        var(--popup-accent);
+        var(--popup-text-muted);
 }
 
 
@@ -1021,6 +1208,7 @@
         max-width:
             280px;
     }
+
 
     .fire-popup-title {
 

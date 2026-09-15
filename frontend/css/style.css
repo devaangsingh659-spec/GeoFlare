@@ -16,7 +16,7 @@
     /* ---------- Surfaces ---------- */
 
     --bg-main: #111416;
-    --bg-header: #151819;
+    --bg-header: #181B1D;
     --bg-sidebar: #181B1D;
 
     --bg-card: #202427;
@@ -44,17 +44,6 @@
     --accent-primary-dark: #967E4E;
 
     --accent-soft: rgba(197, 169, 107, 0.11);
-
-
-    /* ---------- Status ---------- */
-
-    --status-online: #8FBC94;
-    --status-online-bg: rgba(121, 168, 126, 0.11);
-    --status-online-border: rgba(121, 168, 126, 0.35);
-
-    --status-offline: #E98B82;
-    --status-offline-bg: rgba(224, 106, 95, 0.10);
-    --status-offline-border: rgba(224, 106, 95, 0.34);
 
 
     /* ---------- Classification ---------- */
@@ -106,15 +95,6 @@
     --accent-primary-dark: #1D4ED8;
 
     --accent-soft: rgba(37, 99, 235, 0.08);
-    /* ---------- Status ---------- */
-
-    --status-online: #4F7F56;
-    --status-online-bg: rgba(79, 127, 86, 0.09);
-    --status-online-border: rgba(79, 127, 86, 0.28);
-
-    --status-offline: #B84D43;
-    --status-offline-bg: rgba(184, 77, 67, 0.08);
-    --status-offline-border: rgba(184, 77, 67, 0.28);
 
 
     /* ---------- Classification ---------- */
@@ -329,77 +309,6 @@ body {
 
     border-color:
         var(--border-hover);
-}
-
-
-/* =========================================================
-   API STATUS
-========================================================= */
-
-.status-container {
-
-    display: flex;
-    align-items: center;
-}
-
-.status {
-
-    font-size: 11px;
-
-    font-weight: 600;
-
-    font-family:
-        "JetBrains Mono",
-        Consolas,
-        monospace;
-
-    letter-spacing: 0.3px;
-
-    padding:
-        5px 10px;
-
-    border-radius:
-        4px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 6px;
-}
-
-
-/* ONLINE */
-
-.status.online {
-
-    background:
-        var(--status-online-bg);
-
-    color:
-        var(--status-online);
-
-    border:
-        1px solid var(--status-online-border);
-
-    box-shadow: none;
-}
-
-
-/* OFFLINE */
-
-.status.offline {
-
-    background:
-        var(--status-offline-bg);
-
-    color:
-        var(--status-offline);
-
-    border:
-        1px solid var(--status-offline-border);
-
-    box-shadow: none;
 }
 
 
@@ -1080,32 +989,37 @@ body:has(.sidebar.collapsed) .leaflet-top.leaflet-left {
     background: var(--fire-new);
 }
 
+/* ---------- Classification ---------- */
+
 .industrial-marker {
-    background: #D2A24C;
+    background: var(--class-industrial);
 }
 
 .agriculture-marker {
-    background: #6FA875;
+    background: var(--class-agricultural);
 }
 
 .forest-marker {
-    background: #4F8B62;
+    background: var(--class-forest);
 }
 
+
+/* ---------- Persistence ---------- */
+
 .persistence-new-marker {
-    background: var(--fire-new);
+    background: var(--persistence-new);
 }
 
 .persistence-recent-marker {
-    background: var(--fire-recent);
+    background: var(--persistence-recent);
 }
 
 .persistence-intermittent-marker {
-    background: var(--fire-intermittent);
+    background: var(--persistence-intermittent);
 }
 
 .persistence-persistent-marker {
-    background: var(--fire-persistent);
+    background: var(--persistence-persistent);
 }
 
 
@@ -1346,42 +1260,32 @@ body:has(.sidebar.collapsed) .leaflet-top.leaflet-left {
 ========================================================= */
 
 .ind-pill {
-
-    border-color:
-        rgba(210, 162, 76, 0.32);
-
-    color:
-        #D2A24C;
+    border-color: var(--class-industrial);
+    color: var(--class-industrial);
 }
 
 .ind-dot {
-    background: #D2A24C;
+    background: var(--class-industrial);
 }
 
+
 .agr-pill {
-
-    border-color:
-        rgba(111, 168, 117, 0.30);
-
-    color:
-        #78AA7D;
+    border-color: var(--class-agricultural);
+    color: var(--class-agricultural);
 }
 
 .agr-dot {
-    background: #6FA875;
+    background: var(--class-agricultural);
 }
 
+
 .for-pill {
-
-    border-color:
-        rgba(79, 139, 98, 0.30);
-
-    color:
-        #6F9D7B;
+    border-color: var(--class-forest);
+    color: var(--class-forest);
 }
 
 .for-dot {
-    background: #4F8B62;
+    background: var(--class-forest);
 }
 
 

@@ -2,11 +2,15 @@
    FIRE DETECTION MAP THEME
    Calm / Professional / High Contrast
 
-   Dark:
-   Charcoal + warm gold + red + green
+   DARK:
+   Charcoal + warm gold + natural fire colours
 
-   Light:
+   LIGHT:
    Warm white + charcoal + muted natural colours
+
+   MARKER SYSTEM:
+   Fill   = Fire Classification
+   Border = Persistence Status
 
    Designed for:
    Stadia Alidade Smooth Dark / Alidade Smooth
@@ -20,10 +24,17 @@
 :root,
 html[data-theme="dark"] {
 
-    /* Map surroundings */
+    /* -------------------------------------------------
+       Map surroundings
+    ------------------------------------------------- */
+
     --map-bg: #111416;
 
-    /* Controls */
+
+    /* -------------------------------------------------
+       Controls
+    ------------------------------------------------- */
+
     --map-control-bg: rgba(25, 28, 30, 0.97);
     --map-control-bg-hover: #2A2F32;
 
@@ -33,37 +44,67 @@ html[data-theme="dark"] {
     --map-border: #3A3F42;
     --map-border-hover: #665B43;
 
-    /* Attribution */
+
+    /* -------------------------------------------------
+       Attribution
+    ------------------------------------------------- */
+
     --map-attribution-bg: rgba(15, 18, 20, 0.92);
     --map-attribution-text: #7C8182;
     --map-attribution-link: #A9ADAC;
 
-    /* Message */
+
+    /* -------------------------------------------------
+       Floating message
+    ------------------------------------------------- */
+
     --map-message-bg: rgba(25, 28, 30, 0.97);
     --map-message-text: #D9D7D2;
 
-    /* Main UI accent */
+
+    /* -------------------------------------------------
+       Main UI accent
+    ------------------------------------------------- */
+
     --map-accent: #C5A96B;
 
-    /* Fire */
-    --fire-new: #E05A4F;
-    --fire-new-light: #F27A6F;
+
+    /* =================================================
+       FIRE CLASSIFICATION
+    ================================================= */
+
+    /* Industrial */
+    --class-industrial: #8A8F8D;
+
+    /* Forest */
+    --class-forest: #3F654A;
+
+    /* Agricultural */
+    --class-agricultural: #9A7653;
+
+
+    /* =================================================
+       PERSISTENCE
+    ================================================= */
+
+    /* New */
+    --persistence-new: #D94A42;
 
     /* Recent */
-    --fire-recent: #E6A24B;
-    --fire-recent-light: #F2BE69;
+    --persistence-recent: #D88732;
 
     /* Intermittent */
-    --fire-intermittent: #D4B15E;
-    --fire-intermittent-light: #E4C878;
+    --persistence-intermittent: #C6A532;
 
     /* Persistent */
-    --fire-persistent: #9A82B5;
-    --fire-persistent-light: #B29AC8;
+    --persistence-persistent: #866FA3;
 
-    /* Marker outline */
+
+    /* -------------------------------------------------
+       Marker outline
+    ------------------------------------------------- */
+
     --marker-outline: rgba(255, 255, 255, 0.92);
-
 }
 
 
@@ -73,49 +114,87 @@ html[data-theme="dark"] {
 
 html[data-theme="light"] {
 
-    /* Map surroundings */
---map-bg: #F8FAFC;
+    /* -------------------------------------------------
+       Map surroundings
+    ------------------------------------------------- */
 
-/* Controls */
---map-control-bg: rgba(255, 255, 255, 0.97);
---map-control-bg-hover: #F1F5F9;
+    --map-bg: #F8FAFC;
 
---map-control-text: #0F172A;
---map-control-text-hover: #2563EB;
 
---map-border: #E2E8F0;
---map-border-hover: #CBD5E1;
+    /* -------------------------------------------------
+       Controls
+    ------------------------------------------------- */
 
-/* Attribution */
---map-attribution-bg: rgba(255, 255, 255, 0.92);
---map-attribution-text: #94A3B8;
---map-attribution-link: #475569;
+    --map-control-bg: rgba(255, 255, 255, 0.97);
+    --map-control-bg-hover: #F1F5F9;
 
-/* Message */
---map-message-bg: rgba(255, 255, 255, 0.97);
---map-message-text: #0F172A;
+    --map-control-text: #0F172A;
+    --map-control-text-hover: #806C3F;
 
-/* Main accent */
---map-accent: #2563EB;
+    --map-border: #E2E8F0;
+    --map-border-hover: #CBD5E1;
 
-/* Fire */
---fire-new: #C94036;
---fire-new-light: #E05B50;
 
-/* Recent */
---fire-recent: #C77A22;
---fire-recent-light: #D9943A;
+    /* -------------------------------------------------
+       Attribution
+    ------------------------------------------------- */
 
-/* Intermittent */
---fire-intermittent: #AA841F;
---fire-intermittent-light: #C29D3D;
+    --map-attribution-bg: rgba(255, 255, 255, 0.92);
+    --map-attribution-text: #94A3B8;
+    --map-attribution-link: #475569;
 
-/* Persistent */
---fire-persistent: #795F96;
---fire-persistent-light: #9277AD;
 
-/* Marker outline */
---marker-outline: rgba(255, 255, 255, 0.95);
+    /* -------------------------------------------------
+       Floating message
+    ------------------------------------------------- */
+
+    --map-message-bg: rgba(255, 255, 255, 0.97);
+    --map-message-text: #0F172A;
+
+
+    /* -------------------------------------------------
+       Main UI accent
+    ------------------------------------------------- */
+
+    --map-accent: #947B43;
+
+
+    /* =================================================
+       FIRE CLASSIFICATION
+    ================================================= */
+
+    /* Industrial */
+    --class-industrial: #6F7572;
+
+    /* Forest */
+    --class-forest: #34583F;
+
+    /* Agricultural */
+    --class-agricultural: #896747;
+
+
+    /* =================================================
+       PERSISTENCE
+    ================================================= */
+
+    /* New */
+    --persistence-new: #C94036;
+
+    /* Recent */
+    --persistence-recent: #C77A22;
+
+    /* Intermittent */
+    --persistence-intermittent: #AA841F;
+
+    /* Persistent */
+    --persistence-persistent: #795F96;
+
+
+    /* -------------------------------------------------
+       Marker outline
+    ------------------------------------------------- */
+
+    --marker-outline: rgba(255, 255, 255, 0.95);
 }
 
 
@@ -124,6 +203,7 @@ html[data-theme="light"] {
 ===================================================== */
 
 .map-container {
+
     flex: 1;
 
     position: relative;
@@ -137,7 +217,9 @@ html[data-theme="light"] {
         background-color 0.25s ease;
 }
 
+
 #map {
+
     width: 100%;
     height: 100%;
 
@@ -151,8 +233,8 @@ html[data-theme="light"] {
 
    Do NOT invert, grayscale, or recolor the raster tiles.
 
-   Alidade Smooth Dark is already designed as a dark
-   subdued basemap for overlays and markers.
+   The selected Leaflet tile layer is responsible for
+   the actual basemap appearance.
 */
 
 
@@ -175,6 +257,14 @@ html[data-theme="light"] {
         hidden;
 }
 
+
+/*
+   Zoom buttons and other Leaflet bar controls.
+
+   Explicitly targeting .leaflet-control-zoom a prevents
+   Leaflet's default black button colour from overriding
+   the theme.
+*/
 
 .leaflet-bar a,
 .leaflet-control-zoom a,
@@ -201,9 +291,15 @@ html[data-theme="light"] {
 
 
 .leaflet-bar a:last-child {
-    border-bottom: none !important;
+
+    border-bottom:
+        none !important;
 }
 
+
+/* -----------------------------------------------------
+   Control hover
+----------------------------------------------------- */
 
 .leaflet-bar a:hover,
 .leaflet-control-zoom a:hover,
@@ -249,6 +345,7 @@ html[data-theme="light"] {
     color:
         var(--map-attribution-link) !important;
 }
+
 
 /* =====================================================
    FLOATING MAP MESSAGE
@@ -330,28 +427,46 @@ html[data-theme="light"] {
     height:
         28px;
 
+
+    /*
+       DEFAULT FILL
+
+       Industrial is used as the neutral fallback.
+       JavaScript should normally assign the proper
+       classification class.
+    */
+
     background:
-        var(--fire-new);
+        var(--class-industrial);
+
+
+    /*
+       DEFAULT BORDER
+
+       New is used as the fallback persistence state.
+    */
 
     border:
-        2px solid var(--marker-outline);
+        2px solid var(--persistence-new);
+
 
     border-radius:
         50%;
 
-    /*
-       NO glow.
 
-       The marker is made visible through:
-       - saturation
-       - contrast
-       - white outline
-       - size
+    /*
+       NO GLOW.
+
+       Visibility comes from:
+       - colour contrast
+       - white/dark border
+       - marker size
        - subtle shadow
     */
 
     box-shadow:
         0 2px 7px rgba(0, 0, 0, 0.55);
+
 
     display:
         flex;
@@ -370,21 +485,52 @@ html[data-theme="light"] {
 
     transition:
         transform 0.18s ease,
-        box-shadow 0.18s ease;
+        box-shadow 0.18s ease,
+        border-color 0.18s ease;
 }
 
 
 /* =====================================================
-   NEW — RED
+   CLASSIFICATION — INDUSTRIAL
+===================================================== */
+
+.fire-icon.class-industrial {
+
+    background:
+        var(--class-industrial);
+}
+
+
+/* =====================================================
+   CLASSIFICATION — FOREST
+===================================================== */
+
+.fire-icon.class-forest {
+
+    background:
+        var(--class-forest);
+}
+
+
+/* =====================================================
+   CLASSIFICATION — AGRICULTURAL
+===================================================== */
+
+.fire-icon.class-agricultural {
+
+    background:
+        var(--class-agricultural);
+}
+
+
+/* =====================================================
+   PERSISTENCE — NEW
 ===================================================== */
 
 .fire-icon.persistence-new {
 
-    background:
-        #E05A4F;
-
     border-color:
-        #FFFFFF;
+        var(--persistence-new);
 
     box-shadow:
         0 2px 8px rgba(0, 0, 0, 0.60);
@@ -395,16 +541,13 @@ html[data-theme="light"] {
 
 
 /* =====================================================
-   RECENT — ORANGE / AMBER
+   PERSISTENCE — RECENT
 ===================================================== */
 
 .fire-icon.persistence-recent {
 
-    background:
-        #E6A24B;
-
     border-color:
-        #FFF8E8;
+        var(--persistence-recent);
 
     box-shadow:
         0 2px 8px rgba(0, 0, 0, 0.60);
@@ -412,16 +555,13 @@ html[data-theme="light"] {
 
 
 /* =====================================================
-   INTERMITTENT — GOLD
+   PERSISTENCE — INTERMITTENT
 ===================================================== */
 
 .fire-icon.persistence-intermittent {
 
-    background:
-        #D4B15E;
-
     border-color:
-        #FFF9E5;
+        var(--persistence-intermittent);
 
     box-shadow:
         0 2px 8px rgba(0, 0, 0, 0.60);
@@ -429,16 +569,13 @@ html[data-theme="light"] {
 
 
 /* =====================================================
-   PERSISTENT — MUTED VIOLET
+   PERSISTENCE — PERSISTENT
 ===================================================== */
 
 .fire-icon.persistence-persistent {
 
-    background:
-        #9A82B5;
-
     border-color:
-        #F8F3FF;
+        var(--persistence-persistent);
 
     box-shadow:
         0 2px 8px rgba(0, 0, 0, 0.60);
@@ -463,31 +600,66 @@ html[data-theme="light"] {
 
 
 /*
-   Notice that hover does NOT introduce a glow.
+   Hover intentionally does NOT introduce glow.
 
-   This keeps the interface calm even when the user
-   moves across many markers.
+   This keeps the map calm and professional even when
+   many markers are visible.
 */
 
 
 /* =====================================================
-   LIGHT THEME — MARKER OUTLINES
+   LIGHT THEME — MARKER VISIBILITY
+===================================================== */
 
-   On a light map, a dark outline gives better separation.
+/*
+   On a light map, the classification colours are
+   deliberately kept darker so the marker fill remains
+   visible against the light basemap.
+
+   Persistence is communicated by the border.
+*/
+
+html[data-theme="light"] .fire-icon {
+
+    box-shadow:
+        0 2px 7px rgba(0, 0, 0, 0.30);
+}
+
+
+html[data-theme="light"] .fire-icon:hover {
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.40);
+}
+
+
+/* =====================================================
+   LIGHT THEME — PERSISTENCE BORDERS
 ===================================================== */
 
 html[data-theme="light"] .fire-icon.persistence-new {
-    border-color: #7cdef2;
+
+    border-color:
+        var(--persistence-new);
 }
+
 
 html[data-theme="light"] .fire-icon.persistence-recent {
-    border-color: #FFFDF7;
+
+    border-color:
+        var(--persistence-recent);
 }
+
 
 html[data-theme="light"] .fire-icon.persistence-intermittent {
-    border-color: #FFFDF5;
+
+    border-color:
+        var(--persistence-intermittent);
 }
 
+
 html[data-theme="light"] .fire-icon.persistence-persistent {
-    border-color: #FFFFFF;
+
+    border-color:
+        var(--persistence-persistent);
 }
