@@ -24,33 +24,51 @@ function clearFireMarkers() {
 ========================================= */
 
 function createFireMarker(fire) {
-    // -----------------------------
-    // Classification
-    // -----------------------------
-    const rawClassification = String(
-        fire.detection_type ?? ""
-    ).toLowerCase();
+
+    /* =========================================
+       CLASSIFICATION
+       ========================================= */
+
+    const classification =
+        fire.detection_type
+            ? fire.detection_type
+                .toString()
+                .trim()
+                .toLowerCase()
+            : "unknown";
 
     let classificationClass = "industrial";
 
     if (
-        rawClassification.includes("agricultural") ||
-        rawClassification.includes("agriculture")
+        classification === "agricultural" ||
+        classification === "agriculture"
     ) {
         classificationClass = "agricultural";
+
     } else if (
-        rawClassification.includes("forest") ||
-        rawClassification.includes("forest_fire")
+        classification === "forest" ||
+        classification === "forest_fire"
     ) {
         classificationClass = "forest";
+
+    } else if (
+        classification === "industrial"
+    ) {
+        classificationClass = "industrial";
     }
 
-    // -----------------------------
-    // Persistence
-    // -----------------------------
-    const persistenceStatus = String(
-        fire.persistence_status ?? "RECENT"
-    ).toLowerCase();
+
+    /* =========================================
+       PERSISTENCE
+       ========================================= */
+
+    const persistenceStatus =
+        fire.persistence_status
+            ? fire.persistence_status
+                .toString()
+                .trim()
+                .toLowerCase()
+            : "recent";
 
     const validPersistence = [
         "new",
@@ -59,49 +77,75 @@ function createFireMarker(fire) {
         "persistent"
     ];
 
-    const persistenceClass = validPersistence.includes(persistenceStatus)
-        ? persistenceStatus
-        : "recent";
+    const persistenceClass =
+        validPersistence.includes(persistenceStatus)
+            ? persistenceStatus
+            : "recent";
 
-    // -----------------------------
-    // Marker
-    // -----------------------------
-    const markerIcon = L.divIcon({
+
+    /* =========================================
+       CREATE MARKER
+       ========================================= */
+
+    const icon = L.divIcon({
+
         className: "",
+
         html: `
             <div class="
                 fire-icon
                 class-${classificationClass}
                 persistence-${persistenceClass}
-            ">🔥</div>
+            ">
+                🔥
+            </div>
         `,
+
         iconSize: [28, 28],
+
         iconAnchor: [14, 14],
+
         popupAnchor: [0, -14]
     });
 
-    const marker = L.marker(
-        [fire.latitude, fire.longitude],
+
+    const marker =
+        L.marker(
+            [
+                fire.latitude,
+                fire.longitude
+            ],
+            {
+                icon: icon
+            }
+        );
+
+
+    /* =========================================
+       POPUP
+       ========================================= */
+
+    const popupContent =
+        createFirePopup(fire);
+
+
+    const popupClassName = [
+        "fire-detection-popup",
+        `popup-class-${classificationClass}`,
+        `popup-persistence-${persistenceClass}`
+    ].join(" ");
+
+
+    marker.bindPopup(
+        popupContent,
         {
-            icon: markerIcon
+            className: popupClassName
         }
     );
 
-    // Popup
-    const popupContent = createFirePopup(fire);
-
-    const popupClassName =
-        `fire-detection-popup ` +
-        `popup-class-${classificationClass} ` +
-        `popup-persistence-${persistenceClass}`;
-
-    marker.bindPopup(popupContent, {
-        className: popupClassName
-    });
 
     return marker;
 }
-
 
 /* =========================================
    FIRE POPUP
