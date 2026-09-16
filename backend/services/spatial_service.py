@@ -8,49 +8,37 @@ from backend.database.connection import (
 
 def get_fires_in_bbox(west, south, east, north):
     """
-    Return only CURRENT thermal detections inside the
+    Return current/latest thermal detections inside the
     requested bounding box.
 
-    Main categories:
+    NASA FIRMS may not have published today's data yet.
+    Therefore, the function uses the latest acquisition date
+    actually available inside the selected bounding box.
 
+    Persistence:
+        - Spatial radius: 500 meters
+        - Historical window: 5 days
+
+    Categories:
         NEW
-            Latest observation is within the last 3 hours,
-            with only one observation today and no previous-day
-            observation.
+            Latest observation within the last 3 hours,
+            only one observation on the latest available day,
+            and no previous-day observation.
 
         RECENT
-            Exactly one observation today, older than 3 hours,
+            Exactly one observation on the latest available day,
             with no previous-day observation.
 
         INTERMITTENT
-            Multiple observations today, but no observation
-            on a previous day.
+            Multiple observations on the latest available day,
+            with no previous-day observation.
 
         PERSISTENT
-            Observed today and on at least one previous day
-            within the 5-day persistence window.
+            Observation on the latest available day and at least
+            one previous active day within the 5-day window.
 
-    IMPORTANT:
-
-        This function returns ONLY detections whose
-        acquisition date is TODAY.
-
-        Older detections are NOT returned by the main
-        fire-search endpoint.
-
-        Historical statistics for:
-            - 15 days
-            - 1 month
-            - 2 months
-            - 3 months
-
-        will be handled separately.
-
-    Database schema is not modified.
-
-    Persistence analysis:
-        - 500m spatial matching radius
-        - 5-day historical window
+    Historical detections are used only for persistence analysis.
+    They are not returned as separate markers.
     """
 
     conn = get_connection()
@@ -58,9 +46,9 @@ def get_fires_in_bbox(west, south, east, north):
 
     try:
 
-        # ======================================================
-        # CREATE BOUNDING BOX
-        # ======================================================
+        # ==========================================================
+        # BOUNDING BOX
+        # ==========================================================
 
         bbox = """
             ST_MakeEnvelope(
@@ -72,11 +60,42 @@ def get_fires_in_bbox(west, south, east, north):
             )
         """
 
-        # ======================================================
+        # ==========================================================
         # MAIN QUERY
-        # ======================================================
+        # ==========================================================
+        #
+        # IMPORTANT:
+        # We DO NOT use CURRENT_DATE here.
+        #
+        # NASA FIRMS may currently contain Sep 15 data while the
+        # system date is Sep 16.
+        #
+        # So we first find the latest date actually available
+        # inside the requested bounding box.
+        # ==========================================================
 
         query = f"""
+            WITH latest_day AS (
+
+                SELECT
+                    MAX(
+                        (
+                            acquisition_time
+                            AT TIME ZONE 'UTC'
+                        )::date
+                    ) AS max_date
+
+                FROM thermal_detections
+
+                WHERE
+                    geom && {bbox}
+
+                    AND ST_Within(
+                        geom,
+                        {bbox}
+                    )
+            )
+
             SELECT
 
                 d.id,
@@ -147,6 +166,8 @@ def get_fires_in_bbox(west, south, east, north):
 
             FROM thermal_detections d
 
+            CROSS JOIN latest_day ld
+
             LEFT JOIN thermal_detections h
 
                 ON ST_DWithin(
@@ -171,16 +192,13 @@ def get_fires_in_bbox(west, south, east, north):
                     {bbox}
                 )
 
-                -- Only today's detections are returned
-                -- by the main fire-search endpoint.
+                -- Only return detections from the latest
+                -- FIRMS date actually available in this bbox.
 
                 AND (
                     d.acquisition_time
                     AT TIME ZONE 'UTC'
-                )::date = (
-                    NOW()
-                    AT TIME ZONE 'UTC'
-                )::date
+                )::date = ld.max_date
 
             GROUP BY
 
@@ -208,18 +226,44 @@ def get_fires_in_bbox(west, south, east, north):
                 d.acquisition_time DESC;
         """
 
-        # ======================================================
+        # ==========================================================
         # EXECUTE QUERY
-        # ======================================================
+        # ==========================================================
 
         cursor.execute(
             query,
             (
+                # --------------------------------------------------
+                # latest_day:
+                # geom && bbox
+                # --------------------------------------------------
                 west,
                 south,
                 east,
                 north,
 
+                # --------------------------------------------------
+                # latest_day:
+                # ST_Within(geom, bbox)
+                # --------------------------------------------------
+                west,
+                south,
+                east,
+                north,
+
+                # --------------------------------------------------
+                # main query:
+                # d.geom && bbox
+                # --------------------------------------------------
+                west,
+                south,
+                east,
+                north,
+
+                # --------------------------------------------------
+                # main query:
+                # ST_Within(d.geom, bbox)
+                # --------------------------------------------------
                 west,
                 south,
                 east,
@@ -229,23 +273,23 @@ def get_fires_in_bbox(west, south, east, north):
 
         rows = cursor.fetchall()
 
-        # ======================================================
+        # ==========================================================
         # CURRENT UTC TIME
-        # ======================================================
+        # ==========================================================
 
         now = datetime.now(timezone.utc)
 
-        # ======================================================
+        # ==========================================================
         # BUILD RESPONSE
-        # ======================================================
+        # ==========================================================
 
         detections = []
 
         for row in rows:
 
-            # --------------------------------------------------
+            # ------------------------------------------------------
             # DATABASE VALUES
-            # --------------------------------------------------
+            # ------------------------------------------------------
 
             detection_id = row[0]
             latitude = row[1]
@@ -266,9 +310,9 @@ def get_fires_in_bbox(west, south, east, north):
             today_observation_count_db = row[15]
             previous_active_days_db = row[16]
 
-            # --------------------------------------------------
+            # ------------------------------------------------------
             # NORMALIZE ACQUISITION TIME
-            # --------------------------------------------------
+            # ------------------------------------------------------
 
             if acquisition_time is not None:
 
@@ -287,9 +331,9 @@ def get_fires_in_bbox(west, south, east, north):
 
                 age_hours = 999999
 
-            # --------------------------------------------------
+            # ------------------------------------------------------
             # SAFE COUNTS
-            # --------------------------------------------------
+            # ------------------------------------------------------
 
             observation_count = (
                 int(observation_count_db)
@@ -303,7 +347,7 @@ def get_fires_in_bbox(west, south, east, north):
                 else 0
             )
 
-            today_observation_count = (
+            latest_day_observation_count = (
                 int(today_observation_count_db)
                 if today_observation_count_db is not None
                 else 0
@@ -315,9 +359,9 @@ def get_fires_in_bbox(west, south, east, north):
                 else 0
             )
 
-            # ==================================================
+            # ======================================================
             # DEFAULT VALUES
-            # ==================================================
+            # ======================================================
 
             persistence_status = None
             persistence_score = None
@@ -325,12 +369,9 @@ def get_fires_in_bbox(west, south, east, north):
             last_seen = None
             persistence_reason = None
 
-            # ==================================================
+            # ======================================================
             # PERSISTENT
-            # ==================================================
-            #
-            # Detection exists today AND was observed on
-            # at least one previous day.
+            # ======================================================
 
             if previous_active_days >= 1:
 
@@ -340,21 +381,17 @@ def get_fires_in_bbox(west, south, east, north):
                 last_seen = last_seen_db
 
                 persistence_reason = (
-                    f"Detected today and across "
-                    f"{previous_active_days} previous "
-                    f"active day(s) within the 5-day "
+                    f"Detected on the latest available FIRMS "
+                    f"day and across {previous_active_days} "
+                    f"previous active day(s) within the 5-day "
                     f"analysis window."
                 )
 
-            # ==================================================
+            # ======================================================
             # INTERMITTENT
-            # ==================================================
-            #
-            # Multiple distinct observations today.
-            #
-            # No previous-day observation.
+            # ======================================================
 
-            elif today_observation_count >= 2:
+            elif latest_day_observation_count >= 2:
 
                 persistence_status = "INTERMITTENT"
 
@@ -362,25 +399,19 @@ def get_fires_in_bbox(west, south, east, north):
                 last_seen = last_seen_db
 
                 persistence_reason = (
-                    f"Detected "
-                    f"{today_observation_count} distinct "
-                    f"times today with no observation "
-                    f"on a previous day."
+                    f"Detected {latest_day_observation_count} "
+                    f"distinct times on the latest available "
+                    f"FIRMS day with no observation on a "
+                    f"previous day."
                 )
 
-            # ==================================================
+            # ======================================================
             # NEW
-            # ==================================================
-            #
-            # Very fresh satellite observation.
-            #
-            # Only one observation today.
-            #
-            # No previous-day history.
+            # ======================================================
 
             elif (
                 age_hours <= 3
-                and today_observation_count == 1
+                and latest_day_observation_count == 1
                 and previous_active_days == 0
             ):
 
@@ -395,18 +426,12 @@ def get_fires_in_bbox(west, south, east, north):
                     "observation yet."
                 )
 
-            # ==================================================
+            # ======================================================
             # RECENT
-            # ==================================================
-            #
-            # Exactly one observation today.
-            #
-            # Older than NEW threshold.
-            #
-            # No previous-day observation.
+            # ======================================================
 
             elif (
-                today_observation_count == 1
+                latest_day_observation_count == 1
                 and previous_active_days == 0
             ):
 
@@ -416,13 +441,14 @@ def get_fires_in_bbox(west, south, east, north):
                 last_seen = last_seen_db
 
                 persistence_reason = (
-                    "Detected once during the current day "
-                    "with no repeated observation yet."
+                    "Detected once on the latest available "
+                    "FIRMS day with no repeated observation "
+                    "and no previous-day history."
                 )
 
-            # ==================================================
+            # ======================================================
             # SAFETY FALLBACK
-            # ==================================================
+            # ======================================================
 
             else:
 
@@ -432,21 +458,22 @@ def get_fires_in_bbox(west, south, east, north):
                 last_seen = last_seen_db
 
                 persistence_reason = (
-                    "Detected during the current day."
+                    "Detected on the latest available "
+                    "FIRMS day."
                 )
 
-            # ==================================================
+            # ======================================================
             # PERSISTENCE SCORE
-            # ==================================================
+            # ======================================================
 
             persistence_score = min(
                 active_days / 5.0,
                 1.0
             )
 
-            # ==================================================
-            # BUILD RESPONSE
-            # ==================================================
+            # ======================================================
+            # BUILD DETECTION OBJECT
+            # ======================================================
 
             detections.append({
 
@@ -476,11 +503,14 @@ def get_fires_in_bbox(west, south, east, north):
                     else None
                 ),
 
-                "acquisition_time": acquisition_time,
+                "acquisition_time":
+                    acquisition_time,
 
-                "satellite": satellite,
+                "satellite":
+                    satellite,
 
-                "source": source,
+                "source":
+                    source,
 
                 # ==================================================
                 # ML FIELDS
@@ -492,9 +522,11 @@ def get_fires_in_bbox(west, south, east, north):
                     else None
                 ),
 
-                "detection_type": detection_type,
+                "detection_type":
+                    detection_type,
 
-                "prediction_status": prediction_status,
+                "prediction_status":
+                    prediction_status,
 
                 # ==================================================
                 # PERSISTENCE FIELDS
@@ -512,9 +544,11 @@ def get_fires_in_bbox(west, south, east, north):
                     else None
                 ),
 
-                "first_seen": first_seen,
+                "first_seen":
+                    first_seen,
 
-                "last_seen": last_seen,
+                "last_seen":
+                    last_seen,
 
                 "observation_count":
                     observation_count,
@@ -525,15 +559,13 @@ def get_fires_in_bbox(west, south, east, north):
                 "persistence_reason":
                     persistence_reason,
 
-                # Main endpoint contains only current
-                # detections, so this is always False.
-
-                "is_historical": False
+                "is_historical":
+                    False
             })
 
-        # ======================================================
+        # ==========================================================
         # LOGGING
-        # ======================================================
+        # ==========================================================
 
         print("\n========================================")
         print("CURRENT FIRE SEARCH COMPLETE")
@@ -548,15 +580,18 @@ def get_fires_in_bbox(west, south, east, north):
         )
 
         print(
-            "Main detection window: TODAY ONLY"
+            "Main detection window:",
+            "LATEST AVAILABLE FIRMS DAY"
         )
 
         print(
-            "Persistence window: LAST 5 DAYS"
+            "Persistence window:",
+            "LAST 5 DAYS"
         )
 
         print(
-            "Persistence radius: 500 meters"
+            "Persistence radius:",
+            "500 meters"
         )
 
         print(
@@ -564,9 +599,9 @@ def get_fires_in_bbox(west, south, east, north):
             len(detections)
         )
 
-        # ======================================================
+        # ==========================================================
         # COUNTS
-        # ======================================================
+        # ==========================================================
 
         persistent_count = sum(
             1
@@ -617,7 +652,8 @@ def get_fires_in_bbox(west, south, east, north):
         )
 
         print(
-            "Historical: NOT INCLUDED"
+            "Historical:",
+            "NOT INCLUDED"
         )
 
         print("========================================\n")

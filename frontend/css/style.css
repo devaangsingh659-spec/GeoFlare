@@ -46,17 +46,6 @@
     --accent-soft: rgba(197, 169, 107, 0.11);
 
 
-    /* ---------- Status ---------- */
-
-    --status-online: #8FBC94;
-    --status-online-bg: rgba(121, 168, 126, 0.11);
-    --status-online-border: rgba(121, 168, 126, 0.35);
-
-    --status-offline: #E98B82;
-    --status-offline-bg: rgba(224, 106, 95, 0.10);
-    --status-offline-border: rgba(224, 106, 95, 0.34);
-
-
     /* ---------- Classification ---------- */
 
     --fire-new: #E05A4F;
@@ -106,15 +95,6 @@
     --accent-primary-dark: #1D4ED8;
 
     --accent-soft: rgba(37, 99, 235, 0.08);
-    /* ---------- Status ---------- */
-
-    --status-online: #4F7F56;
-    --status-online-bg: rgba(79, 127, 86, 0.09);
-    --status-online-border: rgba(79, 127, 86, 0.28);
-
-    --status-offline: #B84D43;
-    --status-offline-bg: rgba(184, 77, 67, 0.08);
-    --status-offline-border: rgba(184, 77, 67, 0.28);
 
 
     /* ---------- Classification ---------- */
@@ -326,77 +306,6 @@ body {
 
     border-color:
         var(--border-hover);
-}
-
-
-/* =========================================================
-   API STATUS
-========================================================= */
-
-.status-container {
-
-    display: flex;
-    align-items: center;
-}
-
-.status {
-
-    font-size: 11px;
-
-    font-weight: 600;
-
-    font-family:
-        "JetBrains Mono",
-        Consolas,
-        monospace;
-
-    letter-spacing: 0.3px;
-
-    padding:
-        5px 10px;
-
-    border-radius:
-        4px;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 6px;
-}
-
-
-/* ONLINE */
-
-.status.online {
-
-    background:
-        var(--status-online-bg);
-
-    color:
-        var(--status-online);
-
-    border:
-        1px solid var(--status-online-border);
-
-    box-shadow: none;
-}
-
-
-/* OFFLINE */
-
-.status.offline {
-
-    background:
-        var(--status-offline-bg);
-
-    color:
-        var(--status-offline);
-
-    border:
-        1px solid var(--status-offline-border);
-
-    box-shadow: none;
 }
 
 

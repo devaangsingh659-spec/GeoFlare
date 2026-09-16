@@ -504,31 +504,6 @@ function setLoading(isLoading) {
 }
 
 
-// ============================================================
-// API STATUS
-// ============================================================
-
-function updateAPIStatus(isOnline) {
-
-    const statusElement =
-        document.getElementById("apiStatus");
-
-    if (!statusElement) {
-        return;
-    }
-
-    if (isOnline) {
-        statusElement.textContent = "● Online";
-        statusElement.classList.remove("offline");
-        statusElement.classList.add("online");
-    }
-    else {
-        statusElement.textContent = "● Offline";
-        statusElement.classList.remove("online");
-        statusElement.classList.add("offline");
-    }
-}
-
 
 // ============================================================
 // MAP MESSAGE

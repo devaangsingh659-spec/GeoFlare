@@ -44,11 +44,6 @@ document.addEventListener(
             await checkAPI();
 
 
-        updateAPIStatus(
-            apiOnline
-        );
-
-
         if (!apiOnline) {
 
             console.warn(
