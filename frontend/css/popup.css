@@ -29,17 +29,25 @@
     --popup-accent: #C5A96B;
     --popup-accent-light: #D5BD87;
 
-    /* Classification */
-    --popup-new: #E05A4F;
-    --popup-recent: #E6A24B;
-    --popup-intermittent: #D4B15E;
-    --popup-persistent: #9A82B5;
+    /* Persistence border colors */
+    --popup-new: var(--fire-new);
+    --popup-recent: var(--fire-recent);
+    --popup-intermittent: var(--fire-intermittent);
+    --popup-persistent: var(--fire-persistent);
 
     /* Classification fills */
-    --popup-new-bg: rgba(224, 90, 79, 0.12);
-    --popup-recent-bg: rgba(230, 162, 75, 0.12);
-    --popup-intermittent-bg: rgba(212, 177, 94, 0.12);
-    --popup-persistent-bg: rgba(154, 130, 181, 0.12);
+    --popup-industrial: var(--fire-industrial);
+    --popup-industrial-bg: rgba(var(--fire-industrial-rgb), 0.14);
+    --popup-agricultural: var(--fire-agricultural);
+    --popup-agricultural-bg: rgba(var(--fire-agricultural-rgb), 0.14);
+    --popup-forest: var(--fire-forest);
+    --popup-forest-bg: rgba(var(--fire-forest-rgb), 0.14);
+
+    /* Legacy persistence background values */
+    --popup-new-bg: rgba(var(--fire-new-rgb, 224, 90, 79), 0.12);
+    --popup-recent-bg: rgba(var(--fire-recent-rgb, 230, 162, 75), 0.12);
+    --popup-intermittent-bg: rgba(var(--fire-intermittent-rgb, 212, 177, 94), 0.12);
+    --popup-persistent-bg: rgba(var(--fire-persistent-rgb, 154, 130, 181), 0.12);
 
     /* Probability chart */
     --popup-prob-bg: #191D1F;
@@ -69,17 +77,25 @@
 --popup-accent: #2563EB;
 --popup-accent-light: #3B82F6;
 
-/* Classification */
---popup-new: #C94036;
---popup-recent: #C77A22;
---popup-intermittent: #AA841F;
---popup-persistent: #795F96;
+/* Persistence border colors */
+--popup-new: var(--fire-new);
+--popup-recent: var(--fire-recent);
+--popup-intermittent: var(--fire-intermittent);
+--popup-persistent: var(--fire-persistent);
 
 /* Classification fills */
---popup-new-bg: rgba(201, 64, 54, 0.10);
---popup-recent-bg: rgba(199, 122, 34, 0.10);
---popup-intermittent-bg: rgba(170, 132, 31, 0.10);
---popup-persistent-bg: rgba(121, 95, 150, 0.10);
+--popup-industrial: var(--fire-industrial);
+--popup-industrial-bg: rgba(var(--fire-industrial-rgb), 0.14);
+--popup-agricultural: var(--fire-agricultural);
+--popup-agricultural-bg: rgba(var(--fire-agricultural-rgb), 0.14);
+--popup-forest: var(--fire-forest);
+--popup-forest-bg: rgba(var(--fire-forest-rgb), 0.14);
+
+/* Legacy persistence background values */
+--popup-new-bg: rgba(var(--fire-new-rgb, 201, 64, 54), 0.10);
+--popup-recent-bg: rgba(var(--fire-recent-rgb, 199, 122, 34), 0.10);
+--popup-intermittent-bg: rgba(var(--fire-intermittent-rgb, 170, 132, 31), 0.10);
+--popup-persistent-bg: rgba(var(--fire-persistent-rgb, 121, 95, 150), 0.10);
 
 /* Probability chart */
 --popup-prob-bg: #F8FAFC;
@@ -435,12 +451,6 @@
 
 .persistence-new {
 
-    background:
-        var(--popup-new-bg);
-
-    color:
-        var(--popup-new);
-
     border:
         1px solid rgba(224, 90, 79, 0.42);
 
@@ -458,12 +468,6 @@
 
 
 .persistence-recent {
-
-    background:
-        var(--popup-recent-bg);
-
-    color:
-        var(--popup-recent);
 
     border:
         1px solid rgba(230, 162, 75, 0.42);
@@ -483,12 +487,6 @@
 
 .persistence-intermittent {
 
-    background:
-        var(--popup-intermittent-bg);
-
-    color:
-        var(--popup-intermittent);
-
     border:
         1px solid rgba(212, 177, 94, 0.42);
 
@@ -506,12 +504,6 @@
 
 
 .persistence-persistent {
-
-    background:
-        var(--popup-persistent-bg);
-
-    color:
-        var(--popup-persistent);
 
     border:
         1px solid rgba(154, 130, 181, 0.42);
@@ -665,16 +657,17 @@
 
 /* Industrial */
 
-.badge-industrial {
+.badge-industrial,
+.classification-industrial {
 
     background:
-        var(--popup-persistent-bg);
+        var(--popup-industrial-bg);
 
     color:
-        var(--popup-persistent);
+        var(--popup-industrial);
 
     border:
-        1px solid rgba(154, 130, 181, 0.40);
+        none;
 
     font-weight:
         700;
@@ -684,16 +677,17 @@
 /* Agricultural */
 
 .badge-agricultural,
-.badge-agriculture {
+.badge-agriculture,
+.classification-agricultural {
 
     background:
-        rgba(111, 168, 117, 0.11);
+        var(--popup-agricultural-bg);
 
     color:
-        #6FA875;
+        var(--popup-agricultural);
 
     border:
-        1px solid rgba(111, 168, 117, 0.38);
+        none;
 
     font-weight:
         700;
@@ -703,16 +697,17 @@
 /* Forest */
 
 .badge-forest,
-.badge-forest_fire {
+.badge-forest_fire,
+.classification-forest {
 
     background:
-        rgba(212, 177, 94, 0.11);
+        var(--popup-forest-bg);
 
     color:
-        var(--popup-intermittent);
+        var(--popup-forest);
 
     border:
-        1px solid rgba(212, 177, 94, 0.38);
+        none;
 
     font-weight:
         700;

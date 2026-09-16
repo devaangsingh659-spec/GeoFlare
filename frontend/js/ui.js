@@ -182,6 +182,11 @@ function renderClassPieChart(fires) {
 
             const ctx = chartCanvas.getContext("2d");
 
+            const rootStyles = getComputedStyle(document.documentElement);
+            const industrialChartColor = rootStyles.getPropertyValue('--fire-industrial').trim() || '#7D838A';
+            const agriculturalChartColor = rootStyles.getPropertyValue('--fire-agricultural').trim() || '#8C6C50';
+            const forestChartColor = rootStyles.getPropertyValue('--fire-forest').trim() || '#2F5D4E';
+
             classPieChartInstance = new Chart(ctx, {
                 type: "doughnut",
                 data: {
@@ -193,14 +198,14 @@ function renderClassPieChart(fires) {
                             parseFloat(forPct)
                         ],
                         backgroundColor: [
-                            "#8b5cf6", // Violet for Industrial
-                            "#10b981", // Emerald for Agricultural
-                            "#f59e0b"  // Amber for Forest
+                            industrialChartColor,
+                            agriculturalChartColor,
+                            forestChartColor
                         ],
                         hoverBackgroundColor: [
-                            "#7c3aed",
-                            "#059669",
-                            "#d97706"
+                            industrialChartColor,
+                            agriculturalChartColor,
+                            forestChartColor
                         ],
                         borderColor: "#ffffff",
                         borderWidth: 2,
@@ -243,10 +248,11 @@ function renderClassPieChart(fires) {
         } else {
 
             // Native HTML5 Canvas Fallback
+            const rootStyles = getComputedStyle(document.documentElement);
             drawCanvasPieFallback(chartCanvas, [
-                { label: "Industrial", value: parseFloat(indPct), color: "#8b5cf6" },
-                { label: "Agricultural", value: parseFloat(agrPct), color: "#10b981" },
-                { label: "Forest", value: parseFloat(forPct), color: "#f59e0b" }
+                { label: "Industrial", value: parseFloat(indPct), color: rootStyles.getPropertyValue('--fire-industrial').trim() || '#7D838A' },
+                { label: "Agricultural", value: parseFloat(agrPct), color: rootStyles.getPropertyValue('--fire-agricultural').trim() || '#8C6C50' },
+                { label: "Forest", value: parseFloat(forPct), color: rootStyles.getPropertyValue('--fire-forest').trim() || '#2F5D4E' }
             ]);
 
         }

@@ -40,6 +40,22 @@ function createFireMarker(fire) {
             ? fire.persistence_status.toLowerCase()
             : "recent";
 
+    const classificationText =
+        fire.detection_type || "industrial";
+
+    const classificationKey =
+        classificationText
+            .toLowerCase()
+            .replace(/[_\s]+/g, " ")
+            .includes("forest")
+            ? "forest"
+            : classificationText
+                .toLowerCase()
+                .replace(/[_\s]+/g, " ")
+                .includes("agri")
+                ? "agricultural"
+                : "industrial";
+
 
     const icon =
         L.divIcon({
@@ -49,6 +65,7 @@ function createFireMarker(fire) {
             html: `
                 <div class="
                     fire-icon
+                    classification-${classificationKey}
                     persistence-${persistenceStatus}
                 ">
                     🔥
@@ -149,6 +166,19 @@ function createFirePopup(fire) {
     const classification =
         fire.detection_type ??
         "Not classified";
+
+    const classificationKey =
+        (classification || "industrial")
+            .toLowerCase()
+            .replace(/[_\s]+/g, " ")
+            .includes("forest")
+            ? "forest"
+            : (classification || "industrial")
+                .toLowerCase()
+                .replace(/[_\s]+/g, " ")
+                .includes("agri")
+                ? "agricultural"
+                : "industrial";
 
 
     const predictionStatus =
@@ -343,6 +373,7 @@ function createFirePopup(fire) {
 
                 <span class="
                     fire-popup-badge
+                    classification-${classificationKey}
                     persistence-${persistenceBadgeClass}
                 ">
                     ${persistenceStatus}
@@ -513,6 +544,11 @@ function generateDonutSVG(pInd, pAgr, pFor) {
     const normAgr = total > 0 ? pAgr / total : 0.333;
     const normFor = total > 0 ? pFor / total : 0.334;
 
+    const rootStyles = getComputedStyle(document.documentElement);
+    const industrialColor = rootStyles.getPropertyValue('--fire-industrial').trim() || '#7D838A';
+    const agriculturalColor = rootStyles.getPropertyValue('--fire-agricultural').trim() || '#8C6C50';
+    const forestColor = rootStyles.getPropertyValue('--fire-forest').trim() || '#2F5D4E';
+
     const r = 20;
     const cx = 28;
     const cy = 28;
@@ -531,13 +567,13 @@ function generateDonutSVG(pInd, pAgr, pFor) {
     return `
     <svg width="56" height="56" viewBox="0 0 56 56" class="popup-mini-donut">
         <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#e5e7eb" stroke-width="7" />
-        <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#8b5cf6" stroke-width="7"
+        <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${industrialColor}" stroke-width="7"
             stroke-dasharray="${strokeInd} ${circ}" stroke-dashoffset="${offsetInd}"
             transform="rotate(-90 ${cx} ${cy})" />
-        <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#10b981" stroke-width="7"
+        <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${agriculturalColor}" stroke-width="7"
             stroke-dasharray="${strokeAgr} ${circ}" stroke-dashoffset="${offsetAgr}"
             transform="rotate(-90 ${cx} ${cy})" />
-        <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#f59e0b" stroke-width="7"
+        <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${forestColor}" stroke-width="7"
             stroke-dasharray="${strokeFor} ${circ}" stroke-dashoffset="${offsetFor}"
             transform="rotate(-90 ${cx} ${cy})" />
         <text x="${cx}" y="${cy + 4}" text-anchor="middle" font-size="9" font-weight="700" fill="#111827">

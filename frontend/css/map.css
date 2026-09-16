@@ -375,16 +375,14 @@ html[data-theme="light"] {
 
 
 /* =====================================================
-   NEW — RED
+   PERSISTENCE BORDERS ONLY
+   Fill colours come from classification.
 ===================================================== */
 
 .fire-icon.persistence-new {
 
-    background:
-        #E05A4F;
-
     border-color:
-        #FFFFFF;
+        #E05A4F;
 
     box-shadow:
         0 2px 8px rgba(0, 0, 0, 0.60);
@@ -394,34 +392,30 @@ html[data-theme="light"] {
 }
 
 
-/* =====================================================
-   RECENT — ORANGE / AMBER
-===================================================== */
-
 .fire-icon.persistence-recent {
 
-    background:
-        #E6A24B;
-
     border-color:
-        #FFF8E8;
+        #E6A24B;
 
     box-shadow:
         0 2px 8px rgba(0, 0, 0, 0.60);
 }
 
-
-/* =====================================================
-   INTERMITTENT — GOLD
-===================================================== */
 
 .fire-icon.persistence-intermittent {
 
-    background:
+    border-color:
         #D4B15E;
 
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.60);
+}
+
+
+.fire-icon.persistence-persistent {
+
     border-color:
-        #FFF9E5;
+        #9A82B5;
 
     box-shadow:
         0 2px 8px rgba(0, 0, 0, 0.60);
@@ -429,19 +423,19 @@ html[data-theme="light"] {
 
 
 /* =====================================================
-   PERSISTENT — MUTED VIOLET
+   CLASSIFICATION FILLS
 ===================================================== */
 
-.fire-icon.persistence-persistent {
+.fire-icon.classification-industrial {
+    background: var(--fire-industrial);
+}
 
-    background:
-        #9A82B5;
+.fire-icon.classification-agricultural {
+    background: var(--fire-agricultural);
+}
 
-    border-color:
-        #F8F3FF;
-
-    box-shadow:
-        0 2px 8px rgba(0, 0, 0, 0.60);
+.fire-icon.classification-forest {
+    background: var(--fire-forest);
 }
 
 

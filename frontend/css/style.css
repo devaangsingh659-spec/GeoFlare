@@ -53,6 +53,13 @@
     --fire-intermittent: #D4B15E;
     --fire-persistent: #9A82B5;
 
+    --fire-industrial: #7D838A;
+    --fire-industrial-rgb: 125, 131, 138;
+    --fire-agricultural: #8C6C50;
+    --fire-agricultural-rgb: 140, 108, 80;
+    --fire-forest: #2F5D4E;
+    --fire-forest-rgb: 47, 93, 78;
+
 }
 
 
@@ -103,6 +110,13 @@
     --fire-recent: #C77A22;
     --fire-intermittent: #AA841F;
     --fire-persistent: #795F96;
+
+    --fire-industrial: #7A7F86;
+    --fire-industrial-rgb: 122, 127, 134;
+    --fire-agricultural: #8A6F58;
+    --fire-agricultural-rgb: 138, 111, 88;
+    --fire-forest: #2F5B4D;
+    --fire-forest-rgb: 47, 91, 77;
 
 }
 
@@ -987,15 +1001,15 @@ body:has(.sidebar.collapsed) .leaflet-top.leaflet-left {
 }
 
 .industrial-marker {
-    background: #D2A24C;
+    background: var(--fire-industrial);
 }
 
 .agriculture-marker {
-    background: #6FA875;
+    background: var(--fire-agricultural);
 }
 
 .forest-marker {
-    background: #4F8B62;
+    background: var(--fire-forest);
 }
 
 .persistence-new-marker {
@@ -1257,40 +1271,40 @@ body:has(.sidebar.collapsed) .leaflet-top.leaflet-left {
 .ind-pill {
 
     border-color:
-        rgba(210, 162, 76, 0.32);
+        rgba(var(--fire-industrial-rgb), 0.32);
 
     color:
-        #D2A24C;
+        var(--fire-industrial);
 }
 
 .ind-dot {
-    background: #D2A24C;
+    background: var(--fire-industrial);
 }
 
 .agr-pill {
 
     border-color:
-        rgba(111, 168, 117, 0.30);
+        rgba(var(--fire-agricultural-rgb), 0.30);
 
     color:
-        #78AA7D;
+        var(--fire-agricultural);
 }
 
 .agr-dot {
-    background: #6FA875;
+    background: var(--fire-agricultural);
 }
 
 .for-pill {
 
     border-color:
-        rgba(79, 139, 98, 0.30);
+        rgba(var(--fire-forest-rgb), 0.30);
 
     color:
-        #6F9D7B;
+        var(--fire-forest);
 }
 
 .for-dot {
-    background: #4F8B62;
+    background: var(--fire-forest);
 }
 
 
